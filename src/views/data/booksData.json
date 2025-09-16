@@ -1,0 +1,167 @@
+{
+  "featuredBooks": [
+    {
+      "id": 1,
+      "title": "Đắc Nhân Tâm",
+      "author": "Dale Carnegie",
+      "price": 89000,
+      "originalPrice": 120000,
+      "discount": 26,
+      "rating": 4.8,
+      "reviews": 1234,
+      "image": "/images/dac-nhan-tam.jpg",
+      "category": "Văn học",
+      "description": "Cuốn sách kinh điển về nghệ thuật giao tiếp và ứng xử trong đời sống.",
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "title": "Sapiens",
+      "author": "Yuval Noah Harari",
+      "price": 156000,
+      "originalPrice": 200000,
+      "discount": 22,
+      "rating": 4.9,
+      "reviews": 2156,
+      "image": "/images/sapiens.jpg",
+      "category": "Giáo dục",
+      "description": "Lịch sử ngắn gọn về loài người từ thời kỳ đồ đá đến hiện đại.",
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "price": 134000,
+      "originalPrice": 180000,
+      "discount": 26,
+      "rating": 4.7,
+      "reviews": 1876,
+      "image": "/images/atomic-habits.jpg",
+      "category": "Kinh tế",
+      "description": "Cách thức xây dựng thói quen tốt và loại bỏ thói quen xấu.",
+      "inStock": true,
+      "isFavorite": true
+    },
+    {
+      "id": 4,
+      "title": "Tôi Tài Giỏi, Bạn Cũng Thế",
+      "author": "Adam Khoo",
+      "price": 67000,
+      "originalPrice": 90000,
+      "discount": 26,
+      "rating": 4.6,
+      "reviews": 987,
+      "image": "/images/toi-tai-gioi.jpg",
+      "category": "Công nghệ",
+      "description": "Phương pháp học tập hiệu quả và phát triển bản thân.",
+      "inStock": true
+    }
+  ],
+  "newBooks": [
+    {
+      "id": 5,
+      "title": "The 7 Habits of Highly Effective People",
+      "author": "Stephen Covey",
+      "price": 145000,
+      "originalPrice": 185000,
+      "discount": 22,
+      "rating": 4.8,
+      "reviews": 1567,
+      "image": "/images/7-habits.jpg",
+      "category": "Văn học",
+      "description": "7 thói quen của những người thành đạt.",
+      "inStock": true
+    },
+    {
+      "id": 6,
+      "title": "Think and Grow Rich",
+      "author": "Napoleon Hill",
+      "price": 99000,
+      "originalPrice": 130000,
+      "discount": 24,
+      "rating": 4.7,
+      "reviews": 1245,
+      "image": "/images/think-grow-rich.jpg",
+      "category": "Kinh tế",
+      "description": "Bí quyết tư duy và làm giàu từ tác giả nổi tiếng.",
+      "inStock": true
+    }
+  ],
+  "bestSellers": [
+    {
+      "id": 7,
+      "title": "Nhà Giả Kim",
+      "author": "Paulo Coelho",
+      "price": 78000,
+      "originalPrice": 95000,
+      "discount": 18,
+      "rating": 4.9,
+      "reviews": 3456,
+      "image": "/images/nha-gia-kim.jpg",
+      "category": "Văn học",
+      "description": "Câu chuyện cảm động về hành trình tìm kiếm kho báu.",
+      "inStock": true
+    },
+    {
+      "id": 8,
+      "title": "Tuổi Trẻ Đáng Giá Bao Nhiêu",
+      "author": "Rosie Nguyễn",
+      "price": 85000,
+      "originalPrice": 110000,
+      "discount": 23,
+      "rating": 4.5,
+      "reviews": 2134,
+      "image": "/images/tuoi-tre-dang-gia.jpg",
+      "category": "Văn học",
+      "description": "Những suy ngẫm về tuổi trẻ và cuộc sống.",
+      "inStock": true
+    }
+  ],
+  "categories": [
+    {
+      "id": "van-hoc",
+      "name": "Văn học",
+      "bookCount": 2500,
+      "icon": "fas fa-book"
+    },
+    {
+      "id": "giao-duc",
+      "name": "Giáo dục", 
+      "bookCount": 1800,
+      "icon": "fas fa-graduation-cap"
+    },
+    {
+      "id": "kinh-te",
+      "name": "Kinh tế",
+      "bookCount": 1200,
+      "icon": "fas fa-chart-line"
+    },
+    {
+      "id": "cong-nghe",
+      "name": "Công nghệ",
+      "bookCount": 900,
+      "icon": "fas fa-laptop-code"
+    }
+  ],
+  "promotions": {
+    "specialOffer": {
+      "title": "KHUYẾN MÃI ĐẶC BIỆT",
+      "description": "Giảm giá lên đến 50% cho tất cả sách văn học",
+      "startDate": "15/09/2025",
+      "endDate": "30/09/2025",
+      "countdown": {
+        "days": 15,
+        "hours": 8,
+        "minutes": 42,
+        "seconds": 30
+      }
+    }
+  },
+  "stats": {
+    "totalBooks": "50K+",
+    "customers": "100K+",
+    "support": "24/7",
+    "satisfaction": "99%"
+  }
+}
