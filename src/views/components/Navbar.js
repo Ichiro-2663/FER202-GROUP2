@@ -93,7 +93,7 @@ function Navbar() {
             <i className="fas fa-book" style={{ color: "#333", fontSize: "16px" }}></i>
           </div>
           <span style={{ fontSize: "20px", fontWeight: "600", color: "#fff" }}>
-            BookStore
+            Trạm Đọc
           </span>
         </BSNavbar.Brand>
 
