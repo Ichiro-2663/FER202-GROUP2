@@ -7,39 +7,39 @@ import {
   Spinner,
   Table,
   Collapse,
-  Button,
+  Form,
 } from "react-bootstrap";
 import DashboardLayout from "../components/DashboardLayout";
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState(null); // "users", "products", "revenue"
+  const [activeSection, setActiveSection] = useState(null);
+  const [filterCategory, setFilterCategory] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:9999/users")
-      .then((response) => {
-        setUsers(response.data);
+    Promise.all([
+      axios.get("http://localhost:9999/users"),
+      axios.get("http://localhost:9999/books"),
+      axios.get("http://localhost:9999/categories"),
+    ])
+      .then(([userRes, bookRes, categoryRes]) => {
+        setUsers(userRes.data);
+        setBooks(bookRes.data);
+        setCategories(categoryRes.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Lỗi khi lấy số người dùng:", error);
+        console.error("Lỗi khi tải dữ liệu:", error);
         setLoading(false);
       });
   }, []);
 
-  const userCount = users.length;
-
-  const groupUsersByRole = () => {
-    const grouped = {};
-    users.forEach((user) => {
-      if (!grouped[user.role]) {
-        grouped[user.role] = [];
-      }
-      grouped[user.role].push(user.name);
-    });
-    return grouped;
+  const getCategoryName = (id) => {
+    const cat = categories.find((c) => c.id === id);
+    return cat ? cat.name : "Không rõ";
   };
 
   const roleLabel = (role) => {
@@ -54,6 +54,28 @@ function AdminDashboard() {
         return "Unknown";
     }
   };
+
+  const groupUsersByRole = () => {
+    const grouped = {};
+    users.forEach((user) => {
+      if (!grouped[user.role]) {
+        grouped[user.role] = [];
+      }
+      grouped[user.role].push(user.name);
+    });
+    return grouped;
+  };
+
+  const filteredBooks = books.filter((book) =>
+    filterCategory ? book.categoryIds.includes(filterCategory) : true
+  );
+
+  // Giả lập dữ liệu mua hàng (hiện tại chưa có)
+  const purchaseStats = []; // nếu có: [{ name: "Le Thi B", amount: 120000 }, ...]
+
+  const renderEmptyMessage = (message) => (
+    <p className="fw-bold text-danger">{message}</p>
+  );
 
   return (
     <DashboardLayout>
@@ -74,14 +96,14 @@ function AdminDashboard() {
                 className="mb-4"
                 style={{ cursor: "pointer" }}
                 onClick={() =>
-                  setActiveSection(
-                    activeSection === "users" ? null : "users"
-                  )
+                  setActiveSection(activeSection === "users" ? null : "users")
                 }
               >
                 <Card.Body>
                   <Card.Title>Số người dùng</Card.Title>
-                  <h2>{userCount}</h2>
+                  <h2 className={users.length === 0 ? "text-danger fw-bold" : ""}>
+                    {users.length === 0 ? "0" : users.length}
+                  </h2>
                 </Card.Body>
               </Card>
             </Col>
@@ -98,8 +120,10 @@ function AdminDashboard() {
                 }
               >
                 <Card.Body>
-                  <Card.Title>Số lượng sản phẩm</Card.Title>
-                  <h2>0</h2>
+                  <Card.Title>Tổng số sản phẩm</Card.Title>
+                  <h2 className={books.length === 0 ? "text-danger fw-bold" : ""}>
+                    {books.length === 0 ? "0" : books.length}
+                  </h2>
                 </Card.Body>
               </Card>
             </Col>
@@ -117,13 +141,23 @@ function AdminDashboard() {
               >
                 <Card.Body>
                   <Card.Title>Số tiền thu được</Card.Title>
-                  <h2>0</h2>
+                  <h2
+                    className={
+                      purchaseStats.length === 0 ? "text-danger fw-bold" : ""
+                    }
+                  >
+                    {purchaseStats.length === 0
+                      ? "0 "
+                      : purchaseStats
+                          .reduce((sum, item) => sum + item.amount, 0)
+                          .toLocaleString() + " VND"}
+                  </h2>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
 
-          {/* Bảng thống kê người dùng */}
+          {/* Thống kê người dùng */}
           <Collapse in={activeSection === "users"}>
             <div>
               <Card>
@@ -131,28 +165,134 @@ function AdminDashboard() {
                   <strong>Thống kê người dùng theo vai trò</strong>
                 </Card.Header>
                 <Card.Body>
-                  <Table striped bordered hover responsive>
-                    <thead>
-                      <tr>
-                        <th>STT</th>
-                        <th>Vai trò</th>
-                        <th>Người dùng</th>
-                        <th>Số lượng</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.entries(groupUsersByRole()).map(
-                        ([role, names], index) => (
-                          <tr key={role}>
+                  {users.length === 0 ? (
+                    renderEmptyMessage("Chưa có thông tin người dùng")
+                  ) : (
+                    <Table striped bordered hover responsive>
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Vai trò</th>
+                          <th>Người dùng</th>
+                          <th>Số lượng</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.entries(groupUsersByRole()).map(
+                          ([role, names], index) => (
+                            <tr key={role}>
+                              <td>{index + 1}</td>
+                              <td>{roleLabel(role)}</td>
+                              <td>{names.join(", ")}</td>
+                              <td>{names.length}</td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </Table>
+                  )}
+                </Card.Body>
+              </Card>
+            </div>
+          </Collapse>
+
+          {/* Thống kê sản phẩm */}
+          <Collapse in={activeSection === "products"}>
+            <div>
+              <Card>
+                <Card.Header>
+                  <strong>
+                    Tổng số sản phẩm có:{" "}
+                    <span
+                      className={
+                        filteredBooks.length === 0 ? "text-danger fw-bold" : ""
+                      }
+                    >
+                      {filteredBooks.length}
+                    </span>
+                  </strong>
+                </Card.Header>
+                <Card.Body>
+                  <Form.Select
+                    className="mb-3"
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                  >
+                    <option value="">-- Lọc theo thể loại --</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+
+                  {filteredBooks.length === 0 ? (
+                    renderEmptyMessage("Chưa có thông tin sách")
+                  ) : (
+                    <Table striped bordered hover responsive>
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Tên sách</th>
+                          <th>Tác giả</th>
+                          <th>Thể loại</th>
+                          <th>Người bán</th>
+                          <th>Số lượng</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredBooks.map((book, index) => (
+                          <tr key={book.id}>
                             <td>{index + 1}</td>
-                            <td>{roleLabel(role)}</td>
-                            <td>{names.join(", ")}</td>
-                            <td>{names.length}</td>
+                            <td>{book.title}</td>
+                            <td>{book.authors.join(", ")}</td>
+                            <td>
+                              {book.categoryIds
+                                .map((id) => getCategoryName(id))
+                                .join(", ")}
+                            </td>
+                            <td>N/A</td>
+                            <td>1</td>
                           </tr>
-                        )
-                      )}
-                    </tbody>
-                  </Table>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
+                </Card.Body>
+              </Card>
+            </div>
+          </Collapse>
+
+          {/* Thống kê doanh thu */}
+          <Collapse in={activeSection === "revenue"}>
+            <div>
+              <Card>
+                <Card.Header>
+                  <strong>Thống kê số tiền thu được</strong>
+                </Card.Header>
+                <Card.Body>
+                  {purchaseStats.length === 0 ? (
+                    renderEmptyMessage("Hiện tại chưa có người dùng nào mua hàng")
+                  ) : (
+                    <Table striped bordered hover responsive>
+                      <thead>
+                        <tr>
+                          <th>STT</th>
+                          <th>Người dùng</th>
+                          <th>Số tiền</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {purchaseStats.map((entry, index) => (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{entry.name}</td>
+                            <td>{entry.amount.toLocaleString()} VND</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
                 </Card.Body>
               </Card>
             </div>
@@ -164,6 +304,7 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard;
+
 
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
