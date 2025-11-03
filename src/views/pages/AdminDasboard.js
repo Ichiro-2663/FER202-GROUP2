@@ -1,155 +1,232 @@
-import React from "react";
-import { Card, Row, Col, Table, Form, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Card,
+  Row,
+  Col,
+  Spinner,
+  Table,
+  Collapse,
+  Button,
+} from "react-bootstrap";
 import DashboardLayout from "../components/DashboardLayout";
-import data from "../data.json";
 
 function AdminDashboard() {
-  const { title, cards, areaChart, barChart, dataTable } = data.admin;
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState(null); // "users", "products", "revenue"
 
-  // Simple chart placeholder component
-  const AreaChartPlaceholder = ({ data, title }) => (
-    <div style={{ height: '300px', backgroundColor: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: '0.25rem', padding: '20px' }}>
-      <h6><i className="fas fa-chart-area me-2"></i>{title}</h6>
-      <div style={{ height: '250px', display: 'flex', alignItems: 'end', justifyContent: 'space-around', paddingTop: '20px' }}>
-        {data.map((item, index) => (
-          <div key={index} style={{ textAlign: 'center', flex: 1 }}>
-            <div 
-              style={{ 
-                height: `${(item.value / 40000) * 200}px`, 
-                backgroundColor: '#007bff', 
-                marginBottom: '5px',
-                borderRadius: '2px'
-              }}
-            ></div>
-            <small style={{ fontSize: '10px' }}>{item.month}</small>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    axios
+      .get("http://localhost:9999/users")
+      .then((response) => {
+        setUsers(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy số người dùng:", error);
+        setLoading(false);
+      });
+  }, []);
 
-  const BarChartPlaceholder = ({ data, title }) => (
-    <div style={{ height: '300px', backgroundColor: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: '0.25rem', padding: '20px' }}>
-      <h6><i className="fas fa-chart-bar me-2"></i>{title}</h6>
-      <div style={{ height: '250px', display: 'flex', alignItems: 'end', justifyContent: 'space-around', paddingTop: '20px' }}>
-        {data.map((item, index) => (
-          <div key={index} style={{ textAlign: 'center', flex: 1, margin: '0 2px' }}>
-            <div 
-              style={{ 
-                height: `${(item.value / 15000) * 200}px`, 
-                backgroundColor: '#007bff', 
-                marginBottom: '5px',
-                borderRadius: '2px'
-              }}
-            ></div>
-            <small style={{ fontSize: '10px' }}>{item.month}</small>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const userCount = users.length;
+
+  const groupUsersByRole = () => {
+    const grouped = {};
+    users.forEach((user) => {
+      if (!grouped[user.role]) {
+        grouped[user.role] = [];
+      }
+      grouped[user.role].push(user.name);
+    });
+    return grouped;
+  };
+
+  const roleLabel = (role) => {
+    switch (role) {
+      case "admin":
+        return "Admin";
+      case "seller":
+        return "Employee";
+      case "customer":
+        return "Customer";
+      default:
+        return "Unknown";
+    }
+  };
 
   return (
     <DashboardLayout>
-      <div className="mb-4">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item active" aria-current="page">{title}</li>
-          </ol>
-        </nav>
-      </div>
+      <h3 className="mb-4">Dashboard</h3>
 
-      {/* Cards Row */}
-      <Row className="mb-4">
-        {cards.map((card, index) => (
-          <Col md={3} key={index}>
-            <Card bg={card.type} text="white" className="mb-4">
-              <Card.Body>
-                <Card.Title>{card.text}</Card.Title>
-                <Card.Text>
-                  {card.actionText}
-                  <span className="float-end">
-                    <i className="fas fa-arrow-circle-right"></i>
-                  </span>
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      {loading ? (
+        <div className="text-center py-5">
+          <Spinner animation="border" variant="primary" />
+          <p className="mt-3">Đang tải dữ liệu...</p>
+        </div>
+      ) : (
+        <>
+          <Row>
+            <Col md={4}>
+              <Card
+                bg="primary"
+                text="white"
+                className="mb-4"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  setActiveSection(
+                    activeSection === "users" ? null : "users"
+                  )
+                }
+              >
+                <Card.Body>
+                  <Card.Title>Số người dùng</Card.Title>
+                  <h2>{userCount}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card
+                bg="warning"
+                text="white"
+                className="mb-4"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  setActiveSection(
+                    activeSection === "products" ? null : "products"
+                  )
+                }
+              >
+                <Card.Body>
+                  <Card.Title>Số lượng sản phẩm</Card.Title>
+                  <h2>0</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card
+                bg="success"
+                text="white"
+                className="mb-4"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  setActiveSection(
+                    activeSection === "revenue" ? null : "revenue"
+                  )
+                }
+              >
+                <Card.Body>
+                  <Card.Title>Số tiền thu được</Card.Title>
+                  <h2>0</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
 
-      {/* Charts Row */}
-      <Row className="mb-4">
-        <Col md={6}>
-          <AreaChartPlaceholder data={areaChart.data} title={areaChart.title} />
-        </Col>
-        <Col md={6}>
-          <BarChartPlaceholder data={barChart.data} title={barChart.title} />
-        </Col>
-      </Row>
-
-      {/* DataTable */}
-      <Row>
-        <Col>
-          <Card>
-            <Card.Header>
-              <h6 className="mb-0">
-                <i className="fas fa-table me-2"></i>
-                {dataTable.title}
-              </h6>
-            </Card.Header>
-            <Card.Body>
-              <div className="mb-3 d-flex justify-content-between">
-                <div className="d-flex align-items-center">
-                  <span className="me-2">Show</span>
-                  <Form.Select size="sm" style={{ width: 'auto' }}>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                  </Form.Select>
-                  <span className="ms-2">entries</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <span className="me-2">Search:</span>
-                  <Form.Control 
-                    type="text" 
-                    size="sm" 
-                    style={{ width: '200px' }}
-                    placeholder=""
-                  />
-                </div>
-              </div>
-              
-              <Table striped bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Name <i className="fas fa-sort"></i></th>
-                    <th>Position <i className="fas fa-sort"></i></th>
-                    <th>Office <i className="fas fa-sort"></i></th>
-                    <th>Age <i className="fas fa-sort"></i></th>
-                    <th>Start date <i className="fas fa-sort"></i></th>
-                    <th>Salary <i className="fas fa-sort"></i></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dataTable.data.map((row, index) => (
-                    <tr key={index}>
-                      <td>{row.name}</td>
-                      <td>{row.position}</td>
-                      <td>{row.office}</td>
-                      <td>{row.age}</td>
-                      <td>{row.startDate}</td>
-                      <td>{row.salary}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+          {/* Bảng thống kê người dùng */}
+          <Collapse in={activeSection === "users"}>
+            <div>
+              <Card>
+                <Card.Header>
+                  <strong>Thống kê người dùng theo vai trò</strong>
+                </Card.Header>
+                <Card.Body>
+                  <Table striped bordered hover responsive>
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Vai trò</th>
+                        <th>Người dùng</th>
+                        <th>Số lượng</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(groupUsersByRole()).map(
+                        ([role, names], index) => (
+                          <tr key={role}>
+                            <td>{index + 1}</td>
+                            <td>{roleLabel(role)}</td>
+                            <td>{names.join(", ")}</td>
+                            <td>{names.length}</td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </Table>
+                </Card.Body>
+              </Card>
+            </div>
+          </Collapse>
+        </>
+      )}
     </DashboardLayout>
   );
 }
 
 export default AdminDashboard;
+
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import { Card, Row, Col, Spinner } from "react-bootstrap";
+// import DashboardLayout from "../components/DashboardLayout";
+
+// function AdminDashboard() {
+//   const [userCount, setUserCount] = useState(0);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     axios
+//       .get("http://localhost:9999/users")
+//       .then((response) => {
+//         setUserCount(response.data.length);
+//         setLoading(false);
+//       })
+//       .catch((error) => {
+//         console.error("Lỗi khi lấy số người dùng:", error);
+//         setLoading(false);
+//       });
+//   }, []);
+
+//   return (
+//     <DashboardLayout>
+//       <h3 className="mb-4">Dashboard</h3>
+
+//       {loading ? (
+//         <div className="text-center py-5">
+//           <Spinner animation="border" variant="primary" />
+//           <p className="mt-3">Đang tải dữ liệu...</p>
+//         </div>
+//       ) : (
+//         <Row>
+//           <Col md={4}>
+//             <Card bg="primary" text="white" className="mb-4">
+//               <Card.Body>
+//                 <Card.Title>Số người dùng</Card.Title>
+//                 <h2>{userCount}</h2>
+//               </Card.Body>
+//             </Card>
+//           </Col>
+//           <Col md={4}>
+//             <Card bg="warning" text="white" className="mb-4">
+//               <Card.Body>
+//                 <Card.Title>Số lượng sản phẩm</Card.Title>
+//                 <h2>0</h2> {/* Cập nhật sau nếu có API */}
+//               </Card.Body>
+//             </Card>
+//           </Col>
+//           <Col md={4}>
+//             <Card bg="success" text="white" className="mb-4">
+//               <Card.Body>
+//                 <Card.Title>Số tiền thu được</Card.Title>
+//                 <h2>0</h2> {/* Cập nhật sau nếu có API */}
+//               </Card.Body>
+//             </Card>
+//           </Col>
+//         </Row>
+//       )}
+//     </DashboardLayout>
+//   );
+// }
+
+// export default AdminDashboard;
+
