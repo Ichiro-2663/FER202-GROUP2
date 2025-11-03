@@ -4,6 +4,7 @@
     "generatedAt": "2025-11-03T00:00:00+07:00",
     "description": "Seed database and schema for Book Marketplace (Seller, Customer, Admin). Collections include users, categories, publishers, books, inventory, orders, vouchers, blogPosts, payments, notifications, and settings."
   },
+
   "users": [
     {
       "id": "u_admin",
@@ -51,56 +52,31 @@
       }
     }
   ],
+
   "categories": [
-    {
-      "id": "c_literature",
-      "name": "Văn học",
-      "slug": "van-hoc",
-      "createdAt": "2023-01-01T00:00:00+07:00"
-    },
-    {
-      "id": "c_business",
-      "name": "Kinh tế",
-      "slug": "kinh-te"
-    },
-    {
-      "id": "c_children",
-      "name": "Thiếu nhi",
-      "slug": "thieu-nhi"
-    }
+    { "id": "c_literature", "name": "Văn học", "slug": "van-hoc", "createdAt": "2023-01-01T00:00:00+07:00" },
+    { "id": "c_business", "name": "Kinh tế", "slug": "kinh-te" },
+    { "id": "c_children", "name": "Thiếu nhi", "slug": "thieu-nhi" }
   ],
+
   "publishers": [
-    {
-      "id": "p_vnpub_1",
-      "name": "NXB Trẻ",
-      "country": "Vietnam"
-    },
-    {
-      "id": "p_international_1",
-      "name": "Global Press",
-      "country": "UK"
-    }
+    { "id": "p_vnpub_1", "name": "NXB Trẻ", "country": "Vietnam" },
+    { "id": "p_international_1", "name": "Global Press", "country": "UK" }
   ],
+
   "books": [
     {
       "id": "b_001",
       "sku": "BK-0001",
       "title": "Tiếng Thở Dài Của Tơ Lụa",
-      "authors": [
-        "Nguyen Van A"
-      ],
+      "authors": ["Nguyen Van A"],
       "description": "Tiểu thuyết văn học hiện đại...",
-      "categoryIds": [
-        "c_literature"
-      ],
+      "categoryIds": ["c_literature"],
       "publisherId": "p_vnpub_1",
       "price": 120000,
       "currency": "VND",
       "coverImage": "/assets/covers/b_001.jpg",
-      "tags": [
-        "văn học",
-        "tiểu thuyết"
-      ],
+      "tags": ["văn học", "tiểu thuyết"],
       "publishedDate": "2022-05-10",
       "pages": 320,
       "weightGrams": 420,
@@ -114,21 +90,14 @@
       "id": "b_002",
       "sku": "BK-0002",
       "title": "Basics of Modern Economics",
-      "authors": [
-        "John Smith"
-      ],
+      "authors": ["John Smith"],
       "description": "An introductory book to modern economics...",
-      "categoryIds": [
-        "c_business"
-      ],
+      "categoryIds": ["c_business"],
       "publisherId": "p_international_1",
       "price": 250000,
       "currency": "VND",
       "coverImage": "/assets/covers/b_002.jpg",
-      "tags": [
-        "economics",
-        "textbook"
-      ],
+      "tags": ["economics", "textbook"],
       "publishedDate": "2023-09-01",
       "pages": 480,
       "language": "en",
@@ -138,6 +107,7 @@
       "rating": 4.2
     }
   ],
+
   "inventory": [
     {
       "id": "inv_1",
@@ -160,6 +130,7 @@
       "updatedAt": "2025-10-31T12:00:00+07:00"
     }
   ],
+
   "orders": [
     {
       "id": "o_1001",
@@ -167,12 +138,7 @@
       "customerId": "u_customer_1",
       "email": "customer1@example.com",
       "items": [
-        {
-          "bookId": "b_001",
-          "sellerId": "u_seller_1",
-          "quantity": 1,
-          "unitPrice": 120000
-        }
+        { "bookId": "b_001", "sellerId": "u_seller_1", "quantity": 1, "unitPrice": 120000 }
       ],
       "subtotal": 120000,
       "discount": 0,
@@ -190,6 +156,7 @@
       }
     }
   ],
+
   "orderEvents": [
     {
       "id": "oe_1",
@@ -204,12 +171,11 @@
       "orderId": "o_1001",
       "event": "payment_received",
       "by": "payment_gateway",
-      "meta": {
-        "transactionId": "tx_9001"
-      },
+      "meta": { "transactionId": "tx_9001" },
       "createdAt": "2025-11-01T14:06:00+07:00"
     }
   ],
+
   "payments": [
     {
       "id": "pay_9001",
@@ -218,13 +184,11 @@
       "amount": 145000,
       "currency": "VND",
       "status": "paid",
-      "providerMeta": {
-        "gateway": "MockPay",
-        "transactionId": "tx_9001"
-      },
+      "providerMeta": { "gateway": "MockPay", "transactionId": "tx_9001" },
       "createdAt": "2025-11-01T14:06:00+07:00"
     }
   ],
+
   "vouchers": [
     {
       "id": "v_global_10",
@@ -250,6 +214,7 @@
       "usageLimit": 500
     }
   ],
+
   "blogPosts": [
     {
       "id": "post_001",
@@ -260,17 +225,13 @@
       "authorId": "u_admin",
       "featuredImage": "/assets/blogs/post_001.jpg",
       "category": "Điểm sách",
-      "tags": [
-        "Điểm sách",
-        "Văn học"
-      ],
-      "linkedProductIds": [
-        "b_001"
-      ],
+      "tags": ["Điểm sách", "Văn học"],
+      "linkedProductIds": ["b_001"],
       "visible": true,
       "createdAt": "2025-02-20T08:00:00+07:00"
     }
   ],
+
   "notifications": [
     {
       "id": "n_1",
@@ -278,43 +239,32 @@
       "type": "low_stock_alert",
       "title": "Sách sắp hết hàng",
       "message": "Sản phẩm 'Basics of Modern Economics' (b_002) chỉ còn 3 chiếc trong kho.",
-      "meta": {
-        "bookId": "b_002",
-        "inventoryId": "inv_2",
-        "quantity": 3
-      },
+      "meta": { "bookId": "b_002", "inventoryId": "inv_2", "quantity": 3 },
       "read": false,
       "createdAt": "2025-10-31T12:01:00+07:00"
     }
   ],
+
   "reports": [
     {
       "id": "r_1",
       "type": "seller_revenue",
       "sellerId": "u_seller_1",
-      "period": {
-        "from": "2025-01-01",
-        "to": "2025-10-31"
-      },
-      "metrics": {
-        "grossRevenue": 4500000,
-        "netRevenue": 4050000,
-        "orders": 120
-      }
+      "period": { "from": "2025-01-01", "to": "2025-10-31" },
+      "metrics": { "grossRevenue": 4500000, "netRevenue": 4050000, "orders": 120 }
     }
   ],
+
   "settings": {
-    "paymentMethods": [
-      "credit_card",
-      "bank_transfer",
-      "cod"
-    ],
+    "paymentMethods": ["credit_card", "bank_transfer", "cod"],
     "orderCodePrefix": "ORD",
     "orderCodeDateFormat": "YYYYMMDD",
     "defaultCurrency": "VND",
     "lowStockGlobalThreshold": 3
   },
+
   "auditLogs": [],
+
   "examples": {
     "howToAddBook": "create a new document in books and corresponding inventory entry for the seller",
     "howStockReduces": "When order status moves to 'confirmed' or 'paid', subtract ordered quantity from inventory.quantity and increase inventory.reserved temporarily when order is created.",

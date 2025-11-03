@@ -9,17 +9,21 @@ function Sidebar() {
         <Nav.Link href="/admin" className="text-white">Dashboard</Nav.Link>
         <Nav.Link href="/manageAccount" className="text-white">Manage Account</Nav.Link>
         <Nav.Link href="/adminProfile" className="text-white">Profile</Nav.Link>
+        <Nav.Link href="/sellerRequests" className="text-white">Seller Requests</Nav.Link>
+        <Nav.Link href="/createVoucher-admin" className="text-white">Create Voucher</Nav.Link>
+        <Nav.Link href="/category-admin" className="text-white">Category</Nav.Link>
+
         <Button
           variant="danger"
           className="mb-3 float-end"
           onClick={() => {
             // Xử lý logout ở đây
-            alert("Bạn đã đăng xuất!");
+            alert("Log out Successfully!");
             // Ví dụ: chuyển hướng về trang đăng nhập
             window.location.href = "/";
           }}
         >
-          Đăng xuất
+          Log out
         </Button>
         {/* <Nav.Link href="/tables" className="text-white">Tables</Nav.Link> */}
       </Nav>

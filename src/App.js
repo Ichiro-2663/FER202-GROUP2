@@ -6,7 +6,9 @@ import Login from "./views/pages/Login";
 import Register from "./views/pages/Register";
 import ManageAccount from "./views/pages/ManageAccount";
 import AdminProfile from "./views/pages/AdminProfile";
-
+import SellerRequests from "./views/pages/SellerRequest";
+import CreateVoucher from "./views/pages/CreateVoucherByAdmin";
+import CategoryAdmin from "./views/pages/CategoryAdmin";
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/adminProfile" element={<AdminProfile />} />
+        <Route path="/sellerRequests" element={<SellerRequests />} />
+        <Route path="/createVoucher-admin" element={<CreateVoucher />} />
+        <Route path="/category-admin" element={<CategoryAdmin />} />
        
       </Routes>
     </div>
