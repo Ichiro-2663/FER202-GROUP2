@@ -581,7 +581,7 @@ function Home() {
                 href="#team" 
                 style={{ color: "#fff", textDecoration: "none", marginLeft: "4px" }}
               >
-                vu-app
+                GROUP 2
               </a>
             </div>
           </div>
