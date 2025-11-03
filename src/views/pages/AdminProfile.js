@@ -24,21 +24,21 @@ function AdminProfile() {
     axios
       .put(`http://localhost:9999/users/${admin.id}`, admin)
       .then(() => {
-        alert("✅ Cập nhật thông tin admin thành công!");
+        alert("✅ Admin profile updated successfully!");
       })
       .catch((err) => {
         console.error("Lỗi khi cập nhật admin:", err);
-        alert("❌ Có lỗi xảy ra.");
+        alert("❌ Something went wrong. Check again.");
       });
   };
 
   return (
     <DashboardLayout>
-      <h3 className="mb-4">Thông tin Admin</h3>
+      <h3 className="mb-4">Admin information</h3>
       {loading ? (
         <div className="text-center py-5">
           <Spinner animation="border" variant="primary" />
-          <p className="mt-3">Đang tải dữ liệu...</p>
+          <p className="mt-3">Loading...</p>
         </div>
       ) : (
         <Card>
@@ -55,7 +55,7 @@ function AdminProfile() {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Họ tên</Form.Label>
+                <Form.Label>Full name</Form.Label>
                 <Form.Control
                   type="text"
                   value={admin.name}
@@ -65,7 +65,7 @@ function AdminProfile() {
                 />
               </Form.Group>
               <Button variant="primary" onClick={handleSave}>
-                Lưu thay đổi
+                Save change
               </Button>
             </Form>
           </Card.Body>

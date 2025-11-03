@@ -84,7 +84,7 @@ function AdminDashboard() {
       {loading ? (
         <div className="text-center py-5">
           <Spinner animation="border" variant="primary" />
-          <p className="mt-3">Đang tải dữ liệu...</p>
+          <p className="mt-3">Loading...</p>
         </div>
       ) : (
         <>
@@ -100,7 +100,7 @@ function AdminDashboard() {
                 }
               >
                 <Card.Body>
-                  <Card.Title>Số người dùng</Card.Title>
+                  <Card.Title>Number of users</Card.Title>
                   <h2 className={users.length === 0 ? "text-danger fw-bold" : ""}>
                     {users.length === 0 ? "0" : users.length}
                   </h2>
@@ -120,7 +120,7 @@ function AdminDashboard() {
                 }
               >
                 <Card.Body>
-                  <Card.Title>Tổng số sản phẩm</Card.Title>
+                  <Card.Title>Number of products</Card.Title>
                   <h2 className={books.length === 0 ? "text-danger fw-bold" : ""}>
                     {books.length === 0 ? "0" : books.length}
                   </h2>
@@ -140,7 +140,7 @@ function AdminDashboard() {
                 }
               >
                 <Card.Body>
-                  <Card.Title>Số tiền thu được</Card.Title>
+                  <Card.Title>Money received</Card.Title>
                   <h2
                     className={
                       purchaseStats.length === 0 ? "text-danger fw-bold" : ""
@@ -162,19 +162,19 @@ function AdminDashboard() {
             <div>
               <Card>
                 <Card.Header>
-                  <strong>Thống kê người dùng theo vai trò</strong>
+                  <strong>User statistics by role</strong>
                 </Card.Header>
                 <Card.Body>
                   {users.length === 0 ? (
-                    renderEmptyMessage("Chưa có thông tin người dùng")
+                    renderEmptyMessage("There is no user information")
                   ) : (
                     <Table striped bordered hover responsive>
                       <thead>
                         <tr>
-                          <th>STT</th>
-                          <th>Vai trò</th>
-                          <th>Người dùng</th>
-                          <th>Số lượng</th>
+                          <th>No</th>
+                          <th>Role</th>
+                          <th>Name of users</th>
+                          <th>Quantity</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -202,7 +202,7 @@ function AdminDashboard() {
               <Card>
                 <Card.Header>
                   <strong>
-                    Tổng số sản phẩm có:{" "}
+                    Number of books:{" "}
                     <span
                       className={
                         filteredBooks.length === 0 ? "text-danger fw-bold" : ""
@@ -218,7 +218,7 @@ function AdminDashboard() {
                     value={filterCategory}
                     onChange={(e) => setFilterCategory(e.target.value)}
                   >
-                    <option value="">-- Lọc theo thể loại --</option>
+                    <option value="">-- Filter category --</option>
                     {categories.map((cat) => (
                       <option key={cat.id} value={cat.id}>
                         {cat.name}
@@ -227,17 +227,17 @@ function AdminDashboard() {
                   </Form.Select>
 
                   {filteredBooks.length === 0 ? (
-                    renderEmptyMessage("Chưa có thông tin sách")
+                    renderEmptyMessage("There is no book information")
                   ) : (
                     <Table striped bordered hover responsive>
                       <thead>
                         <tr>
-                          <th>STT</th>
-                          <th>Tên sách</th>
-                          <th>Tác giả</th>
-                          <th>Thể loại</th>
-                          <th>Người bán</th>
-                          <th>Số lượng</th>
+                          <th>No</th>
+                          <th>Name of book</th>
+                          <th>Authors</th>
+                          <th>Category</th>
+                          <th>Name of Seller</th>
+                          <th>Quantity</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -268,18 +268,18 @@ function AdminDashboard() {
             <div>
               <Card>
                 <Card.Header>
-                  <strong>Thống kê số tiền thu được</strong>
+                  <strong>Statistics of collected money</strong>
                 </Card.Header>
                 <Card.Body>
                   {purchaseStats.length === 0 ? (
-                    renderEmptyMessage("Hiện tại chưa có người dùng nào mua hàng")
+                    renderEmptyMessage("There is no purchase information")
                   ) : (
                     <Table striped bordered hover responsive>
                       <thead>
                         <tr>
-                          <th>STT</th>
-                          <th>Người dùng</th>
-                          <th>Số tiền</th>
+                          <th>No</th>
+                          <th>Customer</th>
+                          <th>Money (VND)</th>
                         </tr>
                       </thead>
                       <tbody>
