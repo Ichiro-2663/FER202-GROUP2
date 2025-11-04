@@ -20,7 +20,7 @@ function CreateVoucher() {
     validFrom: "",
     validTo: "",
     usageLimit: 100,
-    createdBy: "admin",
+    createdBy: "u_admin",
     appliesTo: "global",
   });
 
@@ -63,8 +63,27 @@ function CreateVoucher() {
       return;
     }
 
+    const fromDate = new Date(voucher.validFrom);
+    const toDate = new Date(voucher.validTo);
+
+    if (fromDate >= toDate) {
+      setError("Valid From date must be earlier than Valid To date.");
+      setSuccess(false);
+      return;
+    }
+
+    const value = parseInt(voucher.value);
+    if (isNaN(value) || value < 1000) {
+      setError("Voucher value must be at least 1000.");
+      setSuccess(false);
+      return;
+    }
+
     axios
-      .post("http://localhost:9999/vouchers", voucher)
+      .post("http://localhost:9999/vouchers", {
+        ...voucher,
+        value: value,
+      })
       .then(() => {
         setSuccess(true);
         setError("");
@@ -190,7 +209,11 @@ function CreateVoucher() {
                       handleChange("value", parseInt(e.target.value))
                     }
                     required
+                    min={1000}
                   />
+                  <Form.Text className="text-muted">
+                    Minimum value: 1000
+                  </Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>

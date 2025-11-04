@@ -95,19 +95,6 @@ function ManageAccount() {
     <DashboardLayout>
       <h3 className="mb-4">Account Management</h3>
 
-      <Card className="mb-3">
-        <Card.Body>
-          <ul className="mb-0">
-            <li>
-              <strong>REQ-5.2:</strong> Admin can approve or reject seller registration requests.
-            </li>
-            <li>
-              <strong>REQ-5.3:</strong> Admin can disable or delete any account in the system.
-            </li>
-          </ul>
-        </Card.Body>
-      </Card>
-
       {/* Search and filter */}
       <Row className="mb-3">
         <Col md={8}>
