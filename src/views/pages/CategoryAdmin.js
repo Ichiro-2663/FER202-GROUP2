@@ -12,10 +12,21 @@ import {
 } from "react-bootstrap";
 import DashboardLayout from "../components/DashboardLayout";
 
+// Hàm chuyển tiếng Việt có dấu thành slug không dấu, có gạch ngang
+const generateSlug = (text) => {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // bỏ dấu
+    .replace(/[^a-z0-9\s-]/g, "") // bỏ ký tự đặc biệt
+    .trim()
+    .replace(/\s+/g, "-"); // thay khoảng trắng bằng dấu gạch
+};
+
 function CategoryAdmin() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [newCategory, setNewCategory] = useState({ name: "", slug: "" });
+  const [newCategory, setNewCategory] = useState({ name: "" });
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
@@ -32,16 +43,39 @@ function CategoryAdmin() {
       });
   }, []);
 
-  const handleChange = (field, value) => {
-    setNewCategory({ ...newCategory, [field]: value });
+  const handleChange = (value) => {
+    setNewCategory({ name: value });
+    setError(""); // reset error khi người dùng nhập lại
+    setSuccess(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const name = newCategory.name.trim();
+
+    // Kiểm tra nếu tên bắt đầu bằng số
+    if (/^\d/.test(name)) {
+      setError("Category name cannot start with a number.");
+      setSuccess(false);
+      return;
+    }
+
+    const slug = generateSlug(name);
+    const slugExists = categories.some(
+      (cat) => cat.slug.toLowerCase() === slug
+    );
+
+    if (slugExists) {
+      setError("Category & Slug already exist. Please choose a different name.");
+      setSuccess(false);
+      return;
+    }
+
     const payload = {
-      ...newCategory,
-      id: `c_${newCategory.slug}`,
+      id: `c_${slug}`,
+      name: name,
+      slug: slug,
       createdAt: new Date().toISOString(),
     };
 
@@ -49,7 +83,7 @@ function CategoryAdmin() {
       .post("http://localhost:9999/categories", payload)
       .then(() => {
         setCategories([...categories, payload]);
-        setNewCategory({ name: "", slug: "" });
+        setNewCategory({ name: "" });
         setSuccess(true);
         setError("");
       })
@@ -63,16 +97,6 @@ function CategoryAdmin() {
   return (
     <DashboardLayout>
       <h3 className="mb-4">Category Management</h3>
-
-      <Card className="mb-3">
-        <Card.Body>
-          <p>
-            <strong>REQ.8.1:</strong> Admin is responsible for creating,
-            updating, and managing the global category system (Literature,
-            Business, etc.).
-          </p>
-        </Card.Body>
-      </Card>
 
       <Card>
         <Card.Header>
@@ -130,20 +154,14 @@ function CategoryAdmin() {
                   <Form.Control
                     type="text"
                     value={newCategory.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
+                    onChange={(e) => handleChange(e.target.value)}
                     required
                   />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Slug</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={newCategory.slug}
-                    onChange={(e) => handleChange("slug", e.target.value)}
-                    required
-                  />
+                  {newCategory.name && (
+                    <Form.Text className="text-muted">
+                      Slug: <strong>{generateSlug(newCategory.name)}</strong>
+                    </Form.Text>
+                  )}
                 </Form.Group>
               </Col>
             </Row>
