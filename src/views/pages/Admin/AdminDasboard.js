@@ -9,7 +9,7 @@ import {
   Collapse,
   Form,
 } from "react-bootstrap";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../../components/DashboardLayout";
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);

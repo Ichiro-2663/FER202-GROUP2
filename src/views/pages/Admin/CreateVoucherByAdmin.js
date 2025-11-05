@@ -10,7 +10,7 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../../components/DashboardLayout";
 
 function CreateVoucher() {
   const [voucher, setVoucher] = useState({

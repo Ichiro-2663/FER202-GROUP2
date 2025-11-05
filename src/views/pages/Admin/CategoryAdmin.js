@@ -10,7 +10,7 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../../components/DashboardLayout";
 
 // Hàm chuyển tiếng Việt có dấu thành slug không dấu, có gạch ngang
 const generateSlug = (text) => {
