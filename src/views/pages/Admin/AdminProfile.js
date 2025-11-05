@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Form, Button, Spinner } from "react-bootstrap";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../../components/DashboardLayout";
 
 function AdminProfile() {
   const [admin, setAdmin] = useState(null);

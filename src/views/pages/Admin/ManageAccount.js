@@ -9,7 +9,7 @@ import {
   Col,
   Badge,
 } from "react-bootstrap";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../../components/DashboardLayout";
 
 function ManageAccount() {
   const [users, setUsers] = useState([]);

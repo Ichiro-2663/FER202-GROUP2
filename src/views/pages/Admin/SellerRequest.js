@@ -6,7 +6,7 @@ import {
   Button,
   Spinner,
 } from "react-bootstrap";
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../../components/DashboardLayout";
 
 function SellerRequests() {
   const [requests, setRequests] = useState([]);

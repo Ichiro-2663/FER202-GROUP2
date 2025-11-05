@@ -12,6 +12,7 @@ function Sidebar() {
         <Nav.Link href="/sellerRequests" className="text-white">Seller Requests</Nav.Link>
         <Nav.Link href="/createVoucher-admin" className="text-white">Create Voucher</Nav.Link>
         <Nav.Link href="/category-admin" className="text-white">Category</Nav.Link>
+        <Nav.Link href="/manage-blog-admin" className="text-white">Manage Blog</Nav.Link>
 
         <Button
           variant="danger"
