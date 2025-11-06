@@ -2,12 +2,12 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import { Container, Row, Col } from 'react-bootstrap';
 
-function DashboardLayout({ children }) {
+function DashboardLayout({ children, sidebar }) {
   return (
     <Container fluid>
       <Row>
         <Col md={2} className="bg-dark text-white vh-100">
-          <Sidebar />
+          {sidebar}
         </Col>
         <Col md={10}>
           <div className="p-4">{children}</div>

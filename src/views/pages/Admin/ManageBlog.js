@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Sidebar from '../../components/Sidebar';
 import DashboardLayout from '../../components/DashboardLayout';
 
 const API_URL = 'http://localhost:9999/blogPosts';
@@ -26,7 +27,7 @@ export default function ManageBlog() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<Sidebar />}>
       {/* <Col md={10}> */}
         <div className="d-flex justify-content-between align-items-center mt-4 mb-4">
           <h3>📚 Quản lý Blog</h3>

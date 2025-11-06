@@ -10,6 +10,7 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
+import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
 
 function CreateVoucher() {
@@ -107,7 +108,7 @@ function CreateVoucher() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<Sidebar />}>
       <h3 className="mb-4">Voucher Management</h3>
 
       {/* Voucher Table */}

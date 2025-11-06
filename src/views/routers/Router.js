@@ -32,8 +32,8 @@ function Router() {
         <Route path="/manage-blog-admin" element={<ManageBlog />} />
         <Route path="/manage-blog-admin/add" element={<AddBlog />} />
         <Route path="/manage-blog-admin/edit/:id" element={<EditBlog />} />
-  <Route path="/orders" element=[<ordert ist />} />
-<Route path="/orders/:id" element=(<OrderDetail /> />
+        <Route path="/orders" element={<OrderList />} />
+        <Route path="/orders/:id" element={<OrderDetail />} />
       </Routes>
     </div>
   );

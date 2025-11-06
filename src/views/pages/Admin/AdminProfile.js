@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Form, Button, Spinner } from "react-bootstrap";
+import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
 
 function AdminProfile() {
@@ -33,7 +34,7 @@ function AdminProfile() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<Sidebar />}>
       <h3 className="mb-4">Admin information</h3>
       {loading ? (
         <div className="text-center py-5">
