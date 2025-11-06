@@ -9,6 +9,7 @@ import {
   Col,
   Badge,
 } from "react-bootstrap";
+import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
 
 function ManageAccount() {
@@ -92,7 +93,7 @@ function ManageAccount() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<Sidebar />}>
       <h3 className="mb-4">Account Management</h3>
 
       {/* Search and filter */}

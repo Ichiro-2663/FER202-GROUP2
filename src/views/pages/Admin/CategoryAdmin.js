@@ -10,6 +10,7 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
+import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
 
 // Hàm chuyển tiếng Việt có dấu thành slug không dấu, có gạch ngang
@@ -95,7 +96,7 @@ function CategoryAdmin() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<Sidebar />}>
       <h3 className="mb-4">Category Management</h3>
 
       <Card>

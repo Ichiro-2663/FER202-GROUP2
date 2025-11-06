@@ -9,6 +9,7 @@ import {
   Collapse,
   Form,
 } from "react-bootstrap";
+import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
 
 function AdminDashboard() {
@@ -78,7 +79,7 @@ function AdminDashboard() {
   );
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<Sidebar />}>
       <h3 className="mb-4">Dashboard</h3>
 
       {loading ? (

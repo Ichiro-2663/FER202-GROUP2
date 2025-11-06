@@ -7,6 +7,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import DashboardLayout from "../../components/DashboardLayout";
+import SalerSidebar from "../../components/SalerSidebar";
 
 function SellerRequests() {
   const [requests, setRequests] = useState([]);
@@ -43,7 +44,7 @@ function SellerRequests() {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout sidebar={<SalerSidebar />} className="p-4">
       <h3 className="mb-4">Seller Registration Requests</h3>
 
       <Card>

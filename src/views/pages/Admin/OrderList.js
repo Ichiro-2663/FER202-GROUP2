@@ -3,6 +3,7 @@ import { Table, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DashboardLayout from '../../components/DashboardLayout';
+import Sidebar from '../../components/Sidebar';
 
 export default function OrderList() {
   const [orders, setOrders] = useState([]);
@@ -15,7 +16,7 @@ export default function OrderList() {
   }, []);
 
   return (
-    <DashboardLayout className="p-4">
+    <DashboardLayout sidebar={<Sidebar />} className="p-4">
       <h3> List of order</h3>
       <Table striped bordered hover>
         <thead>
