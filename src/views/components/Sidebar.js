@@ -13,7 +13,7 @@ function Sidebar() {
         <Nav.Link href="/createVoucher-admin" className="text-white">Create Voucher</Nav.Link>
         <Nav.Link href="/category-admin" className="text-white">Category</Nav.Link>
         <Nav.Link href="/manage-blog-admin" className="text-white">Manage Blog</Nav.Link>
-
+   <Nav.Link href="/orders" className="text-white">Manage Order</Nav.Link>
         <Button
           variant="danger"
           className="mb-3 float-end"
