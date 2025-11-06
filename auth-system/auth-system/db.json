@@ -1,0 +1,336 @@
+{
+  "meta": {
+    "generatedBy": "ChatGPT",
+    "generatedAt": "2025-11-03T00:00:00+07:00",
+    "description": "Seed database and schema for Book Marketplace (Seller, Customer, Admin). Collections include users, categories, publishers, books, inventory, orders, vouchers, blogPosts, payments, notifications, and settings."
+  },
+  "users": [
+    {
+      "id": "u_admin",
+      "email": "admin@example.com",
+      "passwordHash": "$hashed$admin",
+      "name": "System Admin",
+      "role": "admin",
+      "status": "active",
+      "createdAt": "2024-01-01T09:00:00+07:00",
+      "profile": {
+        "phone": "+840000000001",
+        "address": "Hanoi, Vietnam"
+      }
+    },
+    {
+      "id": "u_seller_1",
+      "email": "seller1@example.com",
+      "passwordHash": "$hashed$seller1",
+      "name": "Nguyen Van A",
+      "role": "seller",
+      "status": "approved",
+      "createdAt": "2024-06-15T10:30:00+07:00",
+      "profile": {
+        "shopName": "A Bookstore",
+        "phone": "+840869386183",
+        "address": "Ho Chi Minh City",
+        "bio": "Chuyên sách văn học và học thuật",
+        "sellerSettings": {
+          "autoApproveOrders": false,
+          "lowStockThreshold": 5
+        }
+      }
+    },
+    {
+      "id": "u_customer_1",
+      "email": "customer1@example.com",
+      "passwordHash": "$hashed$customer1",
+      "name": "Le Thi B",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2024-07-20T14:10:00+07:00",
+      "profile": {
+        "phone": "+84901234567",
+        "address": "Da Nang"
+      }
+    },
+    {
+      "id": "u_customer_1762451901091",
+      "email": "khoinguyen1706@gmail.com",
+      "passwordHash": "$2b$10$y1LbmFRwUWEfJDyo1DSPse3STEc3o5AlqA/sqMCzjfgsp68.uR.OG",
+      "name": "quan khôi nguyên",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2025-11-06T17:58:21.091Z",
+      "profile": {
+        "phone": "+84869981706",
+        "address": "trần khánh dư"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "c_literature",
+      "name": "Văn học",
+      "slug": "van-hoc",
+      "createdAt": "2023-01-01T00:00:00+07:00"
+    },
+    {
+      "id": "c_business",
+      "name": "Kinh tế",
+      "slug": "kinh-te"
+    },
+    {
+      "id": "c_children",
+      "name": "Thiếu nhi",
+      "slug": "thieu-nhi"
+    }
+  ],
+  "publishers": [
+    {
+      "id": "p_vnpub_1",
+      "name": "NXB Trẻ",
+      "country": "Vietnam"
+    },
+    {
+      "id": "p_international_1",
+      "name": "Global Press",
+      "country": "UK"
+    }
+  ],
+  "books": [
+    {
+      "id": "b_001",
+      "sku": "BK-0001",
+      "title": "Tiếng Thở Dài Của Tơ Lụa",
+      "authors": [
+        "Nguyen Van A"
+      ],
+      "description": "Tiểu thuyết văn học hiện đại...",
+      "categoryIds": [
+        "c_literature"
+      ],
+      "publisherId": "p_vnpub_1",
+      "price": 120000,
+      "currency": "VND",
+      "coverImage": "/assets/covers/b_001.jpg",
+      "tags": [
+        "văn học",
+        "tiểu thuyết"
+      ],
+      "publishedDate": "2022-05-10",
+      "pages": 320,
+      "weightGrams": 420,
+      "language": "vi",
+      "visible": true,
+      "createdAt": "2024-06-20T11:00:00+07:00",
+      "salesCount": 150,
+      "rating": 4.6
+    },
+    {
+      "id": "b_002",
+      "sku": "BK-0002",
+      "title": "Basics of Modern Economics",
+      "authors": [
+        "John Smith"
+      ],
+      "description": "An introductory book to modern economics...",
+      "categoryIds": [
+        "c_business"
+      ],
+      "publisherId": "p_international_1",
+      "price": 250000,
+      "currency": "VND",
+      "coverImage": "/assets/covers/b_002.jpg",
+      "tags": [
+        "economics",
+        "textbook"
+      ],
+      "publishedDate": "2023-09-01",
+      "pages": 480,
+      "language": "en",
+      "visible": true,
+      "createdAt": "2024-08-01T09:00:00+07:00",
+      "salesCount": 75,
+      "rating": 4.2
+    }
+  ],
+  "inventory": [
+    {
+      "id": "inv_1",
+      "sellerId": "u_seller_1",
+      "bookId": "b_001",
+      "sku": "BK-0001-S1",
+      "quantity": 12,
+      "reserved": 0,
+      "lowStockThreshold": 5,
+      "updatedAt": "2025-10-31T12:00:00+07:00"
+    },
+    {
+      "id": "inv_2",
+      "sellerId": "u_seller_1",
+      "bookId": "b_002",
+      "sku": "BK-0002-S1",
+      "quantity": 3,
+      "reserved": 0,
+      "lowStockThreshold": 2,
+      "updatedAt": "2025-10-31T12:00:00+07:00"
+    }
+  ],
+  "orders": [
+    {
+      "id": "o_1001",
+      "orderCode": "ORD202511010001",
+      "customerId": "u_customer_1",
+      "email": "customer1@example.com",
+      "items": [
+        {
+          "bookId": "b_001",
+          "sellerId": "u_seller_1",
+          "quantity": 1,
+          "unitPrice": 120000
+        }
+      ],
+      "subtotal": 120000,
+      "discount": 0,
+      "shippingFee": 25000,
+      "total": 145000,
+      "currency": "VND",
+      "status": "confirmed",
+      "paymentStatus": "paid",
+      "createdAt": "2025-11-01T14:05:00+07:00",
+      "updatedAt": "2025-11-01T14:10:00+07:00",
+      "shipping": {
+        "address": "Da Nang, Vietnam",
+        "trackingNumber": null,
+        "carrier": null
+      }
+    }
+  ],
+  "orderEvents": [
+    {
+      "id": "oe_1",
+      "orderId": "o_1001",
+      "event": "order_created",
+      "by": "system",
+      "meta": {},
+      "createdAt": "2025-11-01T14:05:00+07:00"
+    },
+    {
+      "id": "oe_2",
+      "orderId": "o_1001",
+      "event": "payment_received",
+      "by": "payment_gateway",
+      "meta": {
+        "transactionId": "tx_9001"
+      },
+      "createdAt": "2025-11-01T14:06:00+07:00"
+    }
+  ],
+  "payments": [
+    {
+      "id": "pay_9001",
+      "orderId": "o_1001",
+      "method": "credit_card",
+      "amount": 145000,
+      "currency": "VND",
+      "status": "paid",
+      "providerMeta": {
+        "gateway": "MockPay",
+        "transactionId": "tx_9001"
+      },
+      "createdAt": "2025-11-01T14:06:00+07:00"
+    }
+  ],
+  "vouchers": [
+    {
+      "id": "v_global_10",
+      "code": "WELCOME10",
+      "type": "percentage",
+      "value": 10,
+      "appliesTo": "global",
+      "validFrom": "2025-01-01",
+      "validTo": "2025-12-31",
+      "usageLimit": 1000,
+      "usedCount": 20,
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "v_seller_1_5k",
+      "code": "A5KOFF",
+      "type": "amount",
+      "value": 5000,
+      "appliesTo": "seller",
+      "sellerId": "u_seller_1",
+      "validFrom": "2025-05-01",
+      "validTo": "2025-12-31",
+      "usageLimit": 500
+    }
+  ],
+  "blogPosts": [
+    {
+      "id": "post_001",
+      "title": "5 cuốn sách văn học bạn nên đọc năm 2025",
+      "slug": "5-cuon-sach-van-hoc-2025",
+      "excerpt": "Gợi ý 5 tác phẩm mới và kinh điển...",
+      "content": "<p>Nội dung bài viết hỗ trợ HTML cơ bản, có thể gắn link sản phẩm.</p>",
+      "authorId": "u_admin",
+      "featuredImage": "/assets/blogs/post_001.jpg",
+      "category": "Điểm sách",
+      "tags": [
+        "Điểm sách",
+        "Văn học"
+      ],
+      "linkedProductIds": [
+        "b_001"
+      ],
+      "visible": true,
+      "createdAt": "2025-02-20T08:00:00+07:00"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n_1",
+      "recipientId": "u_seller_1",
+      "type": "low_stock_alert",
+      "title": "Sách sắp hết hàng",
+      "message": "Sản phẩm 'Basics of Modern Economics' (b_002) chỉ còn 3 chiếc trong kho.",
+      "meta": {
+        "bookId": "b_002",
+        "inventoryId": "inv_2",
+        "quantity": 3
+      },
+      "read": false,
+      "createdAt": "2025-10-31T12:01:00+07:00"
+    }
+  ],
+  "reports": [
+    {
+      "id": "r_1",
+      "type": "seller_revenue",
+      "sellerId": "u_seller_1",
+      "period": {
+        "from": "2025-01-01",
+        "to": "2025-10-31"
+      },
+      "metrics": {
+        "grossRevenue": 4500000,
+        "netRevenue": 4050000,
+        "orders": 120
+      }
+    }
+  ],
+  "settings": {
+    "paymentMethods": [
+      "credit_card",
+      "bank_transfer",
+      "cod"
+    ],
+    "orderCodePrefix": "ORD",
+    "orderCodeDateFormat": "YYYYMMDD",
+    "defaultCurrency": "VND",
+    "lowStockGlobalThreshold": 3
+  },
+  "auditLogs": [],
+  "examples": {
+    "howToAddBook": "create a new document in books and corresponding inventory entry for the seller",
+    "howStockReduces": "When order status moves to 'confirmed' or 'paid', subtract ordered quantity from inventory.quantity and increase inventory.reserved temporarily when order is created.",
+    "bestSellerCalculation": "Sort books by salesCount (or compute by summing sold quantities from orderEvents)."
+  }
+}
