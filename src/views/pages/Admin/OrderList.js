@@ -36,7 +36,7 @@ export default function OrderList() {
               <td>{order.total.toLocaleString()}₫</td>
               <td>{order.address}</td>
               <td>
-                <Button variant="info" onClick={() => navigate(`/orders/${order.id}`)}>Detail</Button>
+                <Button variant="info" onClick={() => navigate(`/admin/orders/${order.id}`)}>Detail</Button>
               </td>
             </tr>
           ))}

@@ -31,7 +31,7 @@ export default function ManageBlog() {
       {/* <Col md={10}> */}
         <div className="d-flex justify-content-between align-items-center mt-4 mb-4">
           <h3>📚 Quản lý Blog</h3>
-          <Button variant="primary" onClick={() => navigate('/manage-blog-admin/add')}>➕ Add new Blog</Button>
+          <Button variant="primary" onClick={() => navigate('/admin/manage-blog-admin/add')}>Add new Blog</Button>
         </div>
 
         <Row>
@@ -44,7 +44,7 @@ export default function ManageBlog() {
                   <Card.Text>{post.excerpt}</Card.Text>
                   <Card.Text><strong>Category:</strong> {post.category}</Card.Text>
                   <Card.Text><strong>Tags:</strong> {post.tags.join(', ')}</Card.Text>
-                  <Button variant="warning" size="sm" onClick={() => navigate(`/manage-blog-admin/edit/${post.id}`)}>Edit</Button>{' '}
+                  <Button variant="warning" size="sm" onClick={() => navigate(`/admin/manage-blog-admin/edit/${post.id}`)}>Edit</Button>{' '}
                   <Button variant="danger" size="sm" onClick={() => handleDelete(post.id)}>Delete</Button>
                 </Card.Body>
               </Card>
