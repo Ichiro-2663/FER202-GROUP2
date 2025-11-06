@@ -20,20 +20,21 @@ function Router() {
      
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/manageAccount" element={<ManageAccount />} /> 
         <Route path="/saler" element={<SalerDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/adminProfile" element={<AdminProfile />} />
-        <Route path="/sellerRequests" element={<SellerRequests />} />
-        <Route path="/createVoucher-admin" element={<CreateVoucher />} />
-        <Route path="/category-admin" element={<CategoryAdmin />} />
-        <Route path="/manage-blog-admin" element={<ManageBlog />} />
-        <Route path="/manage-blog-admin/add" element={<AddBlog />} />
-        <Route path="/manage-blog-admin/edit/:id" element={<EditBlog />} />
-        <Route path="/orders" element={<OrderList />} />
-        <Route path="/orders/:id" element={<OrderDetail />} />
+        {/* Phần đường dẫn Admin */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/manageAccount" element={<ManageAccount />} /> 
+        <Route path="/admin/adminProfile" element={<AdminProfile />} />
+        <Route path="/admin/sellerRequests" element={<SellerRequests />} />
+        <Route path="/admin/createVoucher-admin" element={<CreateVoucher />} />
+        <Route path="/admin/category-admin" element={<CategoryAdmin />} />
+        <Route path="/admin/manage-blog-admin" element={<ManageBlog />} />
+        <Route path="/admin/manage-blog-admin/add" element={<AddBlog />} />
+        <Route path="/admin/manage-blog-admin/edit/:id" element={<EditBlog />} />
+        <Route path="/admin/orders" element={<OrderList />} />
+        <Route path="/admin/orders/:id" element={<OrderDetail />} />
       </Routes>
     </div>
   );
