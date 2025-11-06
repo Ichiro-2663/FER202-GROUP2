@@ -12,7 +12,8 @@ import CategoryAdmin from "../pages/Admin/CategoryAdmin";
 import ManageBlog from "../pages/Admin/ManageBlog"; 
 import AddBlog from "../pages/Admin/AddBlog";
 import EditBlog from "../pages/Admin/EditBlog";
-
+import OrderList from "../pages/Admin/OrderList";
+import OrderDetail from "../pages/Admin/OrderDetail";
 function Router() {
   return (
     <div>
@@ -31,6 +32,8 @@ function Router() {
         <Route path="/manage-blog-admin" element={<ManageBlog />} />
         <Route path="/manage-blog-admin/add" element={<AddBlog />} />
         <Route path="/manage-blog-admin/edit/:id" element={<EditBlog />} />
+  <Route path="/orders" element=[<ordert ist />} />
+<Route path="/orders/:id" element=(<OrderDetail /> />
       </Routes>
     </div>
   );
