@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-
+// can ket noi voi db
 function Register() {
   const [formData, setFormData] = useState({
     fullName: "",
