@@ -14,6 +14,7 @@ import AddBlog from "../pages/Admin/AddBlog";
 import EditBlog from "../pages/Admin/EditBlog";
 import OrderList from "../pages/Admin/OrderList";
 import OrderDetail from "../pages/Admin/OrderDetail";
+import ForgotPassword from "../pages/ForgotPassword";
 function Router() {
   return (
     <div>
@@ -22,6 +23,7 @@ function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/saler" element={<SalerDashboard />} />
         <Route path="/login" element={<Login />} />
+         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         {/* Phần đường dẫn Admin */}
         <Route path="/admin" element={<AdminDashboard />} />
