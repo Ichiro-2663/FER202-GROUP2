@@ -8,11 +8,19 @@ import {
 } from "react-bootstrap";
 import DashboardLayout from "../../components/DashboardLayout";
 import SalerSidebar from "../../components/SalerSidebar";
-
+import { useNavigate } from 'react-router-dom';
 function SellerRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+ const navigate = useNavigate();
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   useEffect(() => {
     axios
       .get("http://localhost:9999/users?role=seller")

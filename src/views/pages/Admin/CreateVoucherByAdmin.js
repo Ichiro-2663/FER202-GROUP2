@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
-
+import { useNavigate } from 'react-router-dom';
 function CreateVoucher() {
   const [voucher, setVoucher] = useState({
     code: "",
@@ -29,7 +29,15 @@ function CreateVoucher() {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+ const navigate = useNavigate();
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   useEffect(() => {
     fetchVouchers();
   }, []);

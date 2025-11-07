@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
-
+import { useNavigate } from 'react-router-dom';
 // Hàm chuyển tiếng Việt có dấu thành slug không dấu, có gạch ngang
 const generateSlug = (text) => {
   return text
@@ -30,7 +30,15 @@ function CategoryAdmin() {
   const [newCategory, setNewCategory] = useState({ name: "" });
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+ const navigate = useNavigate();
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   useEffect(() => {
     axios
       .get("http://localhost:9999/categories")

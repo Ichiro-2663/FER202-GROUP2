@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Card, Table, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import DashboardLayout from '../../components/DashboardLayout';
-
+import { useNavigate } from 'react-router-dom';
 export default function OrderDetail() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
@@ -13,7 +13,15 @@ export default function OrderDetail() {
     by: '',
     meta: '',
   });
+ const navigate = useNavigate();
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   useEffect(() => {
     axios.get(`http://localhost:9999/orders/${id}`).then(res => setOrder(res.data));
     axios.get(`http://localhost:9999/orderEvents?orderId=${id}`).then(res => setEvents(res.data));

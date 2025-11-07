@@ -20,6 +20,14 @@ export default function EditBlog() {
 
   const [loading, setLoading] = useState(true);
 
+
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   // Fetch blog post by ID
   useEffect(() => {
     const fetchPost = async () => {

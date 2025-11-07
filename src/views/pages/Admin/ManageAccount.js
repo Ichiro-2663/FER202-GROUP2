@@ -11,13 +11,21 @@ import {
 } from "react-bootstrap";
 import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
-
+import { useNavigate } from "react-router-dom";
 function ManageAccount() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("");
+ const navigate = useNavigate();
 
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   useEffect(() => {
     axios
       .get("http://localhost:9999/users")

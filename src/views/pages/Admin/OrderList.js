@@ -9,6 +9,14 @@ export default function OrderList() {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "admin") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // quay lại trang chủ
+    }
+  }, [navigate]);
   useEffect(() => {
     axios.get('http://localhost:9999/orders')
       .then(res => setOrders(res.data))
