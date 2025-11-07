@@ -60,6 +60,14 @@
       "password": "Khongbiet1",
       "role": "customer",
       "createdAt": "2025-11-07T08:15:33.631Z"
+    },
+    {
+      "id": "u_1762539247891",
+      "name": "bi ",
+      "email": "bi@gmail.com",
+      "password": "bi123456",
+      "role": "customer",
+      "createdAt": "2025-11-07T18:14:07.891Z"
     }
   ],
   "categories": [

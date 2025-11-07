@@ -97,6 +97,8 @@ function Login() {
       // ✅ Nếu là admin thì chuyển qua trang admin
       if (foundUser.role === "admin") {
         navigate("/admin"); // hoặc "/dashboardadmin" tùy route bạn có
+        } else if (foundUser.role === "saler") {
+      navigate("/dashboardseller"); // Trang selle
       } else {
         navigate("/"); // người dùng thường
       }
