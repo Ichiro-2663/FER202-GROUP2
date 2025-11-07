@@ -21,23 +21,92 @@ function Login() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      if (formData.email && formData.password) {
-        // Mock login success
-        console.log("Login successful:", formData);
-        navigate("/"); // Redirect to home page
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     if (formData.email && formData.password) {
+  //       // Mock login success
+  //       console.log("Login successful:", formData);
+  //       navigate("/"); // Redirect to home page
+  //     } else {
+  //       setError("Vui lòng nhập đầy đủ thông tin");
+  //     }
+  //     setLoading(false);
+  //   }, 1000);
+  // };
+  //  const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError("");
+
+  //   try {
+  //     // Gọi dữ liệu từ json-server
+  //     const response = await fetch("http://localhost:9999/users");
+  //     if (!response.ok) throw new Error("Không thể kết nối server");
+  //     const users = await response.json();
+
+  //     // Tìm user có email trùng
+  //     const foundUser = users.find(
+  //       (u) => u.email === formData.email && u.passwordHash === `$hashed$${formData.password}`
+  //     );
+
+  //     if (foundUser) {
+  //       alert("Đăng nhập thành công!");
+  //       // Lưu user vào localStorage (tùy chọn)
+  //       localStorage.setItem("currentUser", JSON.stringify(foundUser));
+
+  //       // Điều hướng về trang chủ
+  //       navigate("/");
+  //     } else {
+  //       setError("Email hoặc mật khẩu không đúng!");
+  //     }
+  //   } catch (err) {
+  //     setError("Lỗi kết nối đến server! Hãy chắc chắn json-server đang chạy.");
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+
+  try {
+    const response = await fetch("http://localhost:9999/users");
+    if (!response.ok) throw new Error("Không thể kết nối server");
+
+    const users = await response.json();
+
+    // Tìm người dùng có email trùng khớp
+    const foundUser = users.find(
+      (u) => u.email === formData.email && u.password === formData.password
+    );
+
+    if (foundUser) {
+      alert("🎉 Đăng nhập thành công!");
+      localStorage.setItem("currentUser", JSON.stringify(foundUser));
+      navigate("/");
+    } else {
+      // Kiểm tra nếu email đúng mà mật khẩu sai
+      const emailExists = users.find((u) => u.email === formData.email);
+      if (emailExists) {
+        setError("❌ Mật khẩu hoặc email không đúng!");
       } else {
-        setError("Vui lòng nhập đầy đủ thông tin");
+        setError("❌  Mật khẩu hoặc email không đúng!");
       }
-      setLoading(false);
-    }, 1000);
-  };
+    }
+  } catch (err) {
+    console.error(err);
+    setError("⚠️ Lỗi kết nối đến server! Hãy chắc chắn json-server đang chạy.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleGoogleLogin = () => {
     console.log("Google login clicked");
@@ -46,8 +115,9 @@ function Login() {
 
   const handleFacebookLogin = () => {
     console.log("Facebook login clicked");
-    // Implement Facebook login logic
+    // Implement Facebook login logics
   };
+  
 
   return (
     <div style={{ 

@@ -63,6 +63,12 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const { isLoggedIn, user, login, logout } = useAuth();
   const { cartCount } = useCart();
+  React.useEffect(() => {
+  const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+  if (storedUser && !isLoggedIn) {
+    login(storedUser); // cập nhật mock login
+  }
+}, []);
 
   const handleSearch = (e) => {
     e.preventDefault();

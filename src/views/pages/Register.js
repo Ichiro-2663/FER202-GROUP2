@@ -24,35 +24,93 @@ function Register() {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError("");
+
+  //   // Validation
+  //   if (formData.password !== formData.confirmPassword) {
+  //     setError("Mật khẩu xác nhận không khớp");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   if (!formData.agreeTerms) {
+  //     setError("Vui lòng đồng ý với điều khoản sử dụng");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     if (formData.fullName && formData.email && formData.password) {
+  //       console.log("Registration successful:", formData);
+  //       navigate("/login"); // Redirect to login page
+  //     } else {
+  //       setError("Vui lòng nhập đầy đủ thông tin");
+  //     }
+  //     setLoading(false);
+  //   }, 1000);
+  // };
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    // Validation
-    if (formData.password !== formData.confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp");
+  // Kiểm tra xác nhận mật khẩu
+  if (formData.password !== formData.confirmPassword) {
+    setError("Mật khẩu xác nhận không khớp");
+    setLoading(false);
+    return;
+  }
+
+  if (!formData.agreeTerms) {
+    setError("Vui lòng đồng ý với điều khoản sử dụng");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    // Kiểm tra xem email đã tồn tại chưa
+    const checkResponse = await fetch(`http://localhost:9999/users?email=${formData.email}`);
+    const existingUsers = await checkResponse.json();
+
+    if (existingUsers.length > 0) {
+      setError("Email này đã được đăng ký!");
       setLoading(false);
       return;
     }
 
-    if (!formData.agreeTerms) {
-      setError("Vui lòng đồng ý với điều khoản sử dụng");
-      setLoading(false);
-      return;
-    }
+    // Gửi dữ liệu mới đến database.json
+    const response = await fetch("http://localhost:9999/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: `u_${Date.now()}`,
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password, // có thể mã hóa sau này
+        role: "customer",
+        createdAt: new Date().toISOString(),
+      }),
+    });
 
-    // Simulate API call
-    setTimeout(() => {
-      if (formData.fullName && formData.email && formData.password) {
-        console.log("Registration successful:", formData);
-        navigate("/login"); // Redirect to login page
-      } else {
-        setError("Vui lòng nhập đầy đủ thông tin");
-      }
-      setLoading(false);
-    }, 1000);
-  };
+    if (response.ok) {
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
+      navigate("/login");
+    } else {
+      setError("Đăng ký thất bại, vui lòng thử lại.");
+    }
+  } catch (err) {
+    console.error(err);
+    setError("Lỗi kết nối! Hãy chắc chắn json-server đang chạy.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div style={{ 

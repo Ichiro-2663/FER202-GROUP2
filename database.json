@@ -44,6 +44,22 @@
         "phone": "+84901234567",
         "address": "Da Nang"
       }
+    },
+    {
+      "id": "u_1762502861595",
+      "name": "khôi nguyên ",
+      "email": "khoinguyen@gmail.com",
+      "password": "Khoinguyen123",
+      "role": "customer",
+      "createdAt": "2025-11-07T08:07:41.595Z"
+    },
+    {
+      "id": "u_1762503333631",
+      "name": "nguyen",
+      "email": "test@example",
+      "password": "Khongbiet1",
+      "role": "customer",
+      "createdAt": "2025-11-07T08:15:33.631Z"
     }
   ],
   "categories": [
