@@ -3,7 +3,7 @@
     {
       "id": "u_admin",
       "email": "admin@example.com",
-      "passwordHash": "$hashed$admin",
+      "password": "$hashed$admin",
       "name": "System Admin",
       "role": "admin",
       "status": "active",
@@ -16,7 +16,7 @@
     {
       "id": "u_seller_1",
       "email": "seller1@example.com",
-      "passwordHash": "$hashed$seller1",
+      "password": "$hashed$seller1",
       "name": "Nguyen Van A",
       "role": "seller",
       "status": "approved",
@@ -35,7 +35,7 @@
     {
       "id": "u_customer_1",
       "email": "customer1@example.com",
-      "passwordHash": "$hashed$customer1",
+      "password": "$hashed$customer1",
       "name": "Le Thi B",
       "role": "customer",
       "status": "active",
