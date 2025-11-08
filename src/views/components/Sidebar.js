@@ -2,6 +2,18 @@ import React from "react";
 import { Nav, Button } from "react-bootstrap";
 
 function Sidebar() {
+ 
+  const handleLogout = () => {
+    if (window.confirm("Do you really want to log out?")) {
+      
+      localStorage.removeItem("currentUser");
+
+      alert("Logged out successfully!");
+     
+      window.location.href = "/";
+    }
+  };
+
   return (
     <div className="bg-dark text-white p-3 vh-100" style={{ width: "220px" }}>
       <h4 className="text-center mb-4">Hello, Admin</h4>
@@ -14,19 +26,14 @@ function Sidebar() {
         <Nav.Link href="/admin/category-admin" className="text-white">Category</Nav.Link>
         <Nav.Link href="/admin/manage-blog-admin" className="text-white">Manage Blog</Nav.Link>
         <Nav.Link href="/admin/orders" className="text-white">Manage Order</Nav.Link>
+
         <Button
           variant="danger"
-          className="mb-3 float-end"
-          onClick={() => {
-            // Xử lý logout ở đây
-            alert("Log out Successfully!");
-            // Ví dụ: chuyển hướng về trang đăng nhập
-            window.location.href = "/";
-          }}
+          className="mt-4"
+          onClick={handleLogout}
         >
           Log out
         </Button>
-        {/* <Nav.Link href="/tables" className="text-white">Tables</Nav.Link> */}
       </Nav>
     </div>
   );
