@@ -84,21 +84,26 @@ function Login() {
 
     // Tìm người dùng có email trùng khớp
     const foundUser = users.find(
-      (u) => u.email === formData.email && u.password === formData.password
-    );
+  (u) =>
+    u.email === formData.email &&
+    (u.password === formData.password ||
+      u.passwordHash === formData.password)
+);
 
-    if (foundUser) {
+   if (foundUser) {
       alert("🎉 Đăng nhập thành công!");
       localStorage.setItem("currentUser", JSON.stringify(foundUser));
-      navigate("/");
-    } else {
-      // Kiểm tra nếu email đúng mà mật khẩu sai
-      const emailExists = users.find((u) => u.email === formData.email);
-      if (emailExists) {
-        setError("❌ Mật khẩu hoặc email không đúng!");
+
+      // ✅ Nếu là admin thì chuyển qua trang admin
+      if (foundUser.role === "admin") {
+        navigate("/admin"); // hoặc "/dashboardadmin" tùy route bạn có
+        } else if (foundUser.role === "saler") {
+      navigate("/dashboardseller"); // Trang selle
       } else {
-        setError("❌  Mật khẩu hoặc email không đúng!");
+        navigate("/"); // người dùng thường
       }
+    } else {
+      setError("❌ Email hoặc mật khẩu không đúng!");
     }
   } catch (err) {
     console.error(err);
@@ -305,7 +310,7 @@ function Login() {
                       style={{ fontSize: "14px", color: "#6c757d" }}
                     />
                     <Link 
-                      to="/forgot-password" 
+                      to="/forgotpassword" 
                       style={{ 
                         fontSize: "14px", 
                         color: "#007bff", 
