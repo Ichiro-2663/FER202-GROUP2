@@ -100,7 +100,7 @@ export default function AddBlog() {
     try {
       await axios.post('http://localhost:9999/blogPosts', payload);
       window.alert(`✅ Blog post ${nextId} added successfully!`);
-      navigate('/manage-blog-admin');
+      navigate('/admin/manage-blog-admin');
     } catch (err) {
       console.error(err);
       window.alert('❌ Failed to add blog post!');
