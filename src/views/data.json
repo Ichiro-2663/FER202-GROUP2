@@ -1,0 +1,180 @@
+{
+  "admin": {
+    "title": "Dashboard",
+    "cards": [
+      {
+        "text": "Primary Card",
+        "value": "View Details",
+        "type": "primary",
+        "actionText": "View Details"
+      },
+      {
+        "text": "Warning Card",
+        "value": "View Details",
+        "type": "warning",
+        "actionText": "View Details"
+      },
+      {
+        "text": "Success Card",
+        "value": "View Details",
+        "type": "success",
+        "actionText": "View Details"
+      },
+      {
+        "text": "Danger Card",
+        "value": "View Details",
+        "type": "danger",
+        "actionText": "View Details"
+      }
+    ],
+    "areaChart": {
+      "title": "Area Chart Example",
+      "data": [
+        { "month": "Mar 1", "value": 10000 },
+        { "month": "Mar 3", "value": 30000 },
+        { "month": "Mar 5", "value": 18000 },
+        { "month": "Mar 7", "value": 29000 },
+        { "month": "Mar 9", "value": 25000 },
+        { "month": "Mar 11", "value": 32000 },
+        { "month": "Mar 13", "value": 38000 }
+      ]
+    },
+    "barChart": {
+      "title": "Bar Chart Example",
+      "data": [
+        { "month": "January", "value": 4000 },
+        { "month": "February", "value": 6000 },
+        { "month": "March", "value": 7500 },
+        { "month": "April", "value": 8500 },
+        { "month": "May", "value": 10000 },
+        { "month": "June", "value": 15000 }
+      ]
+    },
+    "dataTable": {
+      "title": "DataTable Example",
+      "data": [
+        {
+          "name": "Airi Satou",
+          "position": "Accountant",
+          "office": "Tokyo",
+          "age": 33,
+          "startDate": "2008/11/28",
+          "salary": "$162,700"
+        },
+        {
+          "name": "Angelica Ramos",
+          "position": "Chief Executive Officer (CEO)",
+          "office": "London",
+          "age": 47,
+          "startDate": "2009/10/09",
+          "salary": "$1,200,000"
+        },
+        {
+          "name": "Ashton Cox",
+          "position": "Junior Technical Author",
+          "office": "San Francisco",
+          "age": 66,
+          "startDate": "2009/01/12",
+          "salary": "$86,000"
+        },
+        {
+          "name": "Bradley Greer",
+          "position": "Software Engineer",
+          "office": "London",
+          "age": 41,
+          "startDate": "2012/10/13",
+          "salary": "$132,000"
+        },
+        {
+          "name": "Brenden Wagner",
+          "position": "Software Engineer",
+          "office": "San Francisco",
+          "age": 28,
+          "startDate": "2011/06/07",
+          "salary": "$206,850"
+        }
+      ]
+    }
+  },
+  "saler": {
+    "title": "Saler Dashboard",
+    "cards": [
+      {
+        "text": "My Sales",
+        "value": "View Details",
+        "type": "success",
+        "actionText": "View Details"
+      },
+      {
+        "text": "Commission",
+        "value": "View Details",
+        "type": "primary",
+        "actionText": "View Details"
+      },
+      {
+        "text": "Active Deals",
+        "value": "View Details",
+        "type": "info",
+        "actionText": "View Details"
+      },
+      {
+        "text": "Leads",
+        "value": "View Details",
+        "type": "warning",
+        "actionText": "View Details"
+      }
+    ],
+    "areaChart": {
+      "title": "Sales Area Chart",
+      "data": [
+        { "month": "Jan 1", "value": 8000 },
+        { "month": "Jan 5", "value": 12000 },
+        { "month": "Jan 10", "value": 9000 },
+        { "month": "Jan 15", "value": 15000 },
+        { "month": "Jan 20", "value": 13000 },
+        { "month": "Jan 25", "value": 18000 },
+        { "month": "Jan 30", "value": 22000 }
+      ]
+    },
+    "barChart": {
+      "title": "Monthly Sales",
+      "data": [
+        { "month": "January", "value": 3000 },
+        { "month": "February", "value": 4500 },
+        { "month": "March", "value": 5000 },
+        { "month": "April", "value": 6500 },
+        { "month": "May", "value": 8000 },
+        { "month": "June", "value": 12000 }
+      ]
+    },
+    "dataTable": {
+      "title": "Sales Data",
+      "data": [
+        {
+          "name": "John Smith",
+          "position": "Sales Manager",
+          "office": "New York",
+          "age": 35,
+          "startDate": "2020/03/15",
+          "salary": "$95,000"
+        },
+        {
+          "name": "Jane Doe",
+          "position": "Sales Representative",
+          "office": "Los Angeles",
+          "age": 28,
+          "startDate": "2021/07/10",
+          "salary": "$65,000"
+        },
+        {
+          "name": "Mike Johnson",
+          "position": "Account Executive",
+          "office": "Chicago",
+          "age": 32,
+          "startDate": "2019/11/20",
+          "salary": "$78,000"
+        }
+      ]
+    }
+  }
+}
