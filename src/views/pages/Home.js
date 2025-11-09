@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import { 
   fetchDatabase, 
@@ -22,6 +23,7 @@ function Home() {
   const [stats, setStats] = useState(null);
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Fetch data from API
   useEffect(() => {
@@ -157,6 +159,7 @@ function Home() {
               <div className="d-flex gap-3">
                 <Button 
                   size="lg"
+                  onClick={() => navigate("/products")}
                   style={{
                     backgroundColor: "#fff",
                     color: "#000",
@@ -176,6 +179,12 @@ function Home() {
                     borderRadius: "25px",
                     padding: "12px 30px",
                     fontWeight: "600"
+                  }}
+                  onClick={() => {
+                    const section = document.getElementById("featured-books");
+                    if (section) {
+                      section.scrollIntoView({ behavior: "smooth" });
+                    }
                   }}
                 >
                   <i className="fas fa-search me-2"></i>
@@ -280,7 +289,7 @@ function Home() {
       </section>
 
       {/* Featured Books Section */}
-      <section style={{ padding: "80px 0", backgroundColor: "#f8f9fa" }}>
+      <section id="featured-books" style={{ padding: "80px 0", backgroundColor: "#f8f9fa" }}>
         <Container>
           <div className="text-center mb-5">
             <h2 style={{ fontSize: "36px", fontWeight: "700", marginBottom: "16px" }}>
@@ -416,6 +425,7 @@ function Home() {
                         fontWeight: "500",
                         marginRight: "12px"
                       }}
+                      onClick={() => navigate("/products?category=Literature")}
                     >
                       VIEW OFFER
                     </Button>
@@ -447,7 +457,20 @@ function Home() {
           <Row>
             {categories.filter(cat => cat.icon).map((category) => (
               <Col lg={3} md={6} className="mb-4" key={category.id}>
-                <Card className="text-center h-100 border-0 shadow-sm" style={{ transition: "transform 0.3s ease" }}>
+                <Card
+                    className="text-center h-100 border-0 shadow-sm"
+                    style={{
+                      transition: "transform 0.3s ease",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      navigate(
+                        `/products?category=${encodeURIComponent(
+                          category.name.replace(/\*\*/g, "")
+                        )}`
+                      )
+                    }
+                  >
                   <Card.Body 
                     style={{ padding: "40px 20px" }}
                     onMouseEnter={(e) => e.currentTarget.parentElement.style.transform = "translateY(-5px)"}
@@ -547,7 +570,7 @@ function Home() {
                 }}>
                   <i className="fas fa-book" style={{ color: "#333", fontSize: "16px" }}></i>
                 </div>
-                <span style={{ fontSize: "20px", fontWeight: "600" }}>BookStore</span>
+                <span style={{ fontSize: "20px", fontWeight: "600" }}>The Reading Nook</span>
               </div>
               <p style={{ fontSize: "14px", color: "#e9ecef" }}>
                 Vietnam's leading online bookstore. We 
@@ -640,7 +663,7 @@ function Home() {
           
           <div className="text-center">
             <p style={{ margin: 0, fontSize: "14px", color: "#e9ecef" }}>
-              © 2025 BookStore. All rights reserved.
+              © 2025 The Reading Nook. All rights reserved.
             </p>
             <div className="mt-2">
               <span style={{ fontSize: "14px", color: "#e9ecef" }}>

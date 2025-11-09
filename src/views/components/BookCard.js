@@ -1,30 +1,41 @@
 import React from "react";
 import { Card, Button, Badge } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "./Navbar";
 
 function BookCard({ book, showDiscount = true }) {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); // Ngăn click lan ra Card
     addToCart(book);
   };
 
+  const handleViewDetail = () => {
+    navigate(`/product/${book.id}`);
+  };
+
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+    return new Intl.NumberFormat("vi-VN").format(price) + "đ";
   };
 
   return (
-    <Card className="h-100 shadow-sm position-relative" style={{ border: "1px solid #e0e0e0" }}>
+    <Card
+      className="h-100 shadow-sm position-relative"
+      style={{ border: "1px solid #e0e0e0", cursor: "pointer" }}
+      onClick={handleViewDetail}
+    >
       {/* Discount Badge */}
       {showDiscount && book.discount && (
-        <Badge 
-          bg="danger" 
+        <Badge
+          bg="danger"
           className="position-absolute"
-          style={{ 
-            top: "10px", 
-            left: "10px", 
+          style={{
+            top: "10px",
+            left: "10px",
             zIndex: 1,
-            fontSize: "12px"
+            fontSize: "12px",
           }}
         >
           -{book.discount}%
@@ -33,11 +44,11 @@ function BookCard({ book, showDiscount = true }) {
 
       {/* Favorite Icon */}
       {book.isFavorite && (
-        <div 
+        <div
           className="position-absolute"
-          style={{ 
-            top: "10px", 
-            right: "10px", 
+          style={{
+            top: "10px",
+            right: "10px",
             zIndex: 1,
             color: "#fff",
             backgroundColor: "rgba(0,0,0,0.5)",
@@ -46,7 +57,7 @@ function BookCard({ book, showDiscount = true }) {
             height: "32px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <i className="fas fa-heart" style={{ fontSize: "14px" }}></i>
@@ -55,52 +66,49 @@ function BookCard({ book, showDiscount = true }) {
 
       {/* Book Image */}
       <div style={{ height: "250px", overflow: "hidden" }}>
-        <Card.Img 
-          variant="top" 
-          src={book.image || "/images/placeholder-book.jpg"} 
+        <Card.Img
+          variant="top"
+          src={book.image || "/images/placeholder-book.jpg"}
           alt={book.title}
-          style={{ 
-            height: "100%", 
+          style={{
+            height: "100%",
             objectFit: "cover",
-            transition: "transform 0.3s ease"
+            transition: "transform 0.3s ease",
           }}
-          onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"}
-          onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
+          onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
         />
       </div>
 
       <Card.Body className="d-flex flex-column">
         {/* Title */}
-        <Card.Title 
-          style={{ 
-            fontSize: "16px", 
+        <Card.Title
+          style={{
+            fontSize: "16px",
             fontWeight: "600",
             marginBottom: "8px",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
           }}
         >
           {book.title}
         </Card.Title>
 
         {/* Author */}
-        <Card.Text 
-          className="text-muted mb-2" 
-          style={{ fontSize: "14px" }}
-        >
+        <Card.Text className="text-muted mb-2" style={{ fontSize: "14px" }}>
           {book.author}
         </Card.Text>
 
         {/* Rating */}
         <div className="mb-2">
           {[...Array(5)].map((_, i) => (
-            <i 
+            <i
               key={i}
-              className={`fa${i < Math.floor(book.rating) ? 's' : 'r'} fa-star`}
-              style={{ 
+              className={`fa${i < Math.floor(book.rating) ? "s" : "r"} fa-star`}
+              style={{
                 color: i < Math.floor(book.rating) ? "#ffc107" : "#e4e5e9",
-                fontSize: "12px"
+                fontSize: "12px",
               }}
             ></i>
           ))}
@@ -112,17 +120,17 @@ function BookCard({ book, showDiscount = true }) {
         {/* Price */}
         <div className="mb-3">
           <div className="d-flex align-items-center">
-            <span 
-              style={{ 
-                fontSize: "18px", 
-                fontWeight: "600", 
-                color: "#000" 
+            <span
+              style={{
+                fontSize: "18px",
+                fontWeight: "600",
+                color: "#000",
               }}
             >
               {formatPrice(book.price)}
             </span>
             {book.originalPrice && book.originalPrice > book.price && (
-              <span 
+              <span
                 className="text-muted text-decoration-line-through ms-2"
                 style={{ fontSize: "14px" }}
               >
@@ -133,15 +141,15 @@ function BookCard({ book, showDiscount = true }) {
         </div>
 
         {/* Add to Cart Button */}
-        <Button 
-          variant="dark" 
+        <Button
+          variant="dark"
           className="mt-auto w-100"
           onClick={handleAddToCart}
-          style={{ 
+          style={{
             borderRadius: "4px",
             fontWeight: "500",
             backgroundColor: "#000",
-            borderColor: "#000"
+            borderColor: "#000",
           }}
         >
           <i className="fas fa-shopping-cart me-2"></i>

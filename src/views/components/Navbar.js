@@ -1,153 +1,191 @@
-import React, { useState, useContext } from "react";
-import { 
-  Navbar as BSNavbar, 
-  Nav, 
-  Container, 
-  Form, 
-  FormControl, 
-  Button, 
-  Dropdown, 
-  Badge 
+import React, { useState, useEffect } from "react";
+import {
+  Navbar as BSNavbar,
+  Nav,
+  Container,
+  Form,
+  FormControl,
+  Button,
+  Dropdown,
+  Badge,
+  ListGroup,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-// Context cho authentication và cart (sẽ tạo sau)
+import { fetchBooks } from "../../services/api";
 const AuthContext = React.createContext();
 const CartContext = React.createContext();
 
-// Mock authentication context
 const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  
+
   const login = (userData) => {
     setIsLoggedIn(true);
     setUser(userData);
   };
-  
+
   const logout = () => {
     setIsLoggedIn(false);
     setUser(null);
   };
-  
+
   return { isLoggedIn, user, login, logout };
 };
 
-// Mock cart context
 const useCart = () => {
   const [cartItems, setCartItems] = useState([]);
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  
-  const addToCart = (product) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(item => item.id === product.id);
-      if (existingItem) {
-        return prev.map(item => 
-          item.id === product.id 
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-  
-  const removeFromCart = (productId) => {
-    setCartItems(prev => prev.filter(item => item.id !== productId));
-  };
-  
-  return { cartItems, cartCount, addToCart, removeFromCart };
+  return { cartItems, cartCount };
 };
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
   const { isLoggedIn, user, login, logout } = useAuth();
   const { cartCount } = useCart();
-  React.useEffect(() => {
-  const storedUser = JSON.parse(localStorage.getItem("currentUser"));
-  if (storedUser && !isLoggedIn) {
-    login(storedUser); // cập nhật mock login
-  }
-}, []);
 
-  const handleSearch = (e) => {
+  useEffect(() => {
+    const loadBooks = async () => {
+      try {
+        const data = await fetchBooks();
+        setBooks(data);
+      } catch (err) {
+        console.error("Error loading books:", err);
+      }
+    };
+    loadBooks();
+  }, []);
+
+  // ✅ Lấy user trong localStorage
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (storedUser && !isLoggedIn) login(storedUser);
+  }, []);
+
+  // ✅ Xử lý lọc realtime khi gõ
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredBooks([]);
+      setShowResults(false);
+      return;
+    }
+
+    const results = books.filter(
+      (book) =>
+        book.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.author?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    setFilteredBooks(results);
+    setShowResults(true);
+  }, [searchQuery, books]);
+
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
-    // Implement search functionality
+    if (!searchQuery.trim()) return;
+    setShowResults(true);
   };
 
-  const handleLogin = () => {
-    // Navigate to login page instead of mock login
-    window.location.href = "/login";
-  };
+  const handleLogin = () => (window.location.href = "/login");
 
   return (
-    <BSNavbar bg="dark" variant="dark" expand="lg" className="shadow-sm" style={{ padding: "8px 0" }}>
+    <BSNavbar bg="dark" variant="dark" expand="lg" className="shadow-sm" style={{ padding: "8px 0", position: "relative" }}>
       <Container fluid className="px-4">
-        {/* Logo và BookStore */}
+        {/* Logo */}
         <BSNavbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <div style={{ 
-            width: "32px", 
-            height: "32px", 
-            background: "linear-gradient(45deg, #fff, #f8f9fa, #e9ecef)", 
-            borderRadius: "4px",
-            marginRight: "8px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}>
+          <div
+            style={{
+              width: "32px",
+              height: "32px",
+              background: "linear-gradient(45deg, #fff, #f8f9fa, #e9ecef)",
+              borderRadius: "4px",
+              marginRight: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <i className="fas fa-book" style={{ color: "#333", fontSize: "16px" }}></i>
           </div>
           <span style={{ fontSize: "20px", fontWeight: "600", color: "#fff" }}>
-            BookStation
+            The Reading Nook
           </span>
         </BSNavbar.Brand>
 
         <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BSNavbar.Collapse id="basic-navbar-nav">
           {/* Search Bar */}
-          <Form className="d-flex mx-auto" style={{ maxWidth: "400px", width: "100%" }} onSubmit={handleSearch}>
+          <Form
+            className="d-flex mx-auto position-relative"
+            style={{ maxWidth: "400px", width: "100%" }}
+            onSubmit={handleSearchSubmit}
+          >
             <FormControl
               type="search"
               placeholder="Search books..."
               className="me-2"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => searchQuery && setShowResults(true)}
               style={{ borderRadius: "20px" }}
             />
-            <Button 
-              variant="outline-light" 
-              type="submit"
-              style={{ borderRadius: "20px", minWidth: "80px" }}
-            >
+            <Button variant="outline-light" type="submit" style={{ borderRadius: "20px", minWidth: "80px" }}>
               <i className="fas fa-search"></i>
             </Button>
+
+            {/* Search Results Dropdown */}
+            {showResults && (
+              <ListGroup
+                className="position-absolute bg-white shadow-sm"
+                style={{
+                  top: "45px",
+                  width: "100%",
+                  zIndex: 999,
+                  borderRadius: "8px",
+                  maxHeight: "250px",
+                  overflowY: "auto",
+                }}
+              >
+                {filteredBooks.length > 0 ? (
+                  filteredBooks.map((book) => (
+                    <ListGroup.Item
+                      key={book.id}
+                      action
+                      onClick={() => {
+                        window.location.href = `/book/${book.id}`;
+                      }}
+                    >
+                      <strong>{book.title}</strong> <br />
+                      <small className="text-muted">{book.author}</small>
+                    </ListGroup.Item>
+                  ))
+                ) : (
+                  <ListGroup.Item className="text-center text-muted">
+                    No related products found
+                  </ListGroup.Item>
+                )}
+              </ListGroup>
+            )}
           </Form>
 
           {/* Navigation Links */}
           <Nav className="ms-auto d-flex align-items-center">
-            {/* Product List */}
-            <Nav.Link href="#products" className="me-3">
-              <i className="fas fa-list me-1"></i>
-              Book Categories
-            </Nav.Link>
-
-            {/* Conditional rendering based on login status */}
             {isLoggedIn ? (
               <>
-                {/* My Orders */}
                 <Nav.Link href="#orders" className="me-3">
                   <i className="fas fa-shopping-bag me-1"></i>
                   Orders
                 </Nav.Link>
 
-                {/* My Cart */}
                 <Nav.Link href="#cart" className="me-3 position-relative">
                   <i className="fas fa-shopping-cart me-1"></i>
                   Cart
                   {cartCount > 0 && (
-                    <Badge 
-                      bg="danger" 
+                    <Badge
+                      bg="danger"
                       className="position-absolute top-0 start-100 translate-middle"
                       style={{ fontSize: "10px" }}
                     >
@@ -156,10 +194,9 @@ function Navbar() {
                   )}
                 </Nav.Link>
 
-                {/* User Profile Dropdown */}
                 <Dropdown align="end">
-                  <Dropdown.Toggle 
-                    variant="link" 
+                  <Dropdown.Toggle
+                    variant="link"
                     id="user-dropdown"
                     className="text-decoration-none d-flex align-items-center"
                     style={{ border: "none", color: "#fff" }}
@@ -187,9 +224,8 @@ function Navbar() {
               </>
             ) : (
               <>
-                {/* Login Button */}
-                <Button 
-                  variant="outline-light" 
+                <Button
+                  variant="outline-light"
                   className="me-2"
                   onClick={handleLogin}
                   style={{ borderRadius: "20px" }}
@@ -197,12 +233,11 @@ function Navbar() {
                   <i className="fas fa-sign-in-alt me-1"></i>
                   Login
                 </Button>
-                
-                {/* Register Button */}
-                <Button 
+
+                <Button
                   variant="light"
                   style={{ borderRadius: "20px", color: "#333" }}
-                  onClick={() => window.location.href = "/register"}
+                  onClick={() => (window.location.href = "/register")}
                 >
                   <i className="fas fa-user-plus me-1"></i>
                   Register
@@ -216,6 +251,5 @@ function Navbar() {
   );
 }
 
-// Export contexts và components
 export default Navbar;
 export { AuthContext, CartContext, useAuth, useCart };

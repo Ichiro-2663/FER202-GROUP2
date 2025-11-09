@@ -15,12 +15,17 @@ import EditBlog from "../pages/Admin/EditBlog";
 import OrderList from "../pages/Admin/OrderList";
 import OrderDetail from "../pages/Admin/OrderDetail";
 import ForgotPassword from "../pages/ForgotPassword";
+import ProductList from "../pages/ProductList";
+import ProductDetail from "../pages/ProductDetail";
 function Router() {
   return (
     <div>
      
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/category/:categoryName" element={<ProductList />} />
         <Route path="/saler" element={<SalerDashboard />} />
         <Route path="/login" element={<Login />} />
          <Route path="/forgotpassword" element={<ForgotPassword />} />
