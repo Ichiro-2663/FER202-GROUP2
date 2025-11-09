@@ -1,0 +1,548 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "Đắc Nhân Tâm",
+      "author": "Dale Carnegie",
+      "price": 89000,
+      "originalPrice": 120000,
+      "discount": 26,
+      "rating": 4.8,
+      "reviews": 1234,
+      "image": "https://nxbhcm.com.vn/Image/Biasach/dacnhantam86.jpg",
+      "category": "**Literature**",
+      "description": "Cuốn sách kinh điển về nghệ thuật giao tiếp và ứng xử trong đời sống.",
+      "inStock": true,
+      "source": "featured"
+    },
+    {
+      "id": "2",
+      "title": "Sapiens",
+      "author": "Yuval Noah Harari",
+      "price": 156000,
+      "originalPrice": 200000,
+      "discount": 22,
+      "rating": 4.9,
+      "reviews": 2156,
+      "image": "https://pos.nvncdn.com/fd5775-40602/ps/20240406_W0tedT95s7.jpeg?v=1712374000",
+      "category": "**Education**",
+      "description": "Lịch sử ngắn gọn về loài người từ thời kỳ đồ đá đến hiện đại.",
+      "inStock": true,
+      "source": "featured"
+    },
+    {
+      "id": "3",
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "price": 134000,
+      "originalPrice": 180000,
+      "discount": 26,
+      "rating": 4.7,
+      "reviews": 1876,
+      "image": "https://pos.nvncdn.com/fd5775-40602/ps/20240107_oLenciDfA6.webp?v=1704611711",
+      "category": "**Business & Economics**",
+      "description": "Cách thức xây dựng thói quen tốt và loại bỏ thói quen xấu.",
+      "inStock": true,
+      "isFavorite": true,
+      "source": "featured"
+    },
+    {
+      "id": "4",
+      "title": "Tôi Tài Giỏi, Bạn Cũng Thế",
+      "author": "Adam Khoo",
+      "price": 67000,
+      "originalPrice": 90000,
+      "discount": 26,
+      "rating": 4.6,
+      "reviews": 987,
+      "image": "https://lh3.ggpht.com/-GaMxL4x7PJY/VYLmzGk-P1I/AAAAAAAAAyA/siToUIqQftw/s1600/1307085036922888817_574_0.png",
+      "category": "**Technology**",
+      "description": "Phương pháp học tập hiệu quả và phát triển bản thân.",
+      "inStock": true,
+      "source": "featured"
+    },
+    {
+      "id": "5",
+      "title": "The 7 Habits of Highly Effective People",
+      "author": "Stephen Covey",
+      "price": 145000,
+      "originalPrice": 185000,
+      "discount": 22,
+      "rating": 4.8,
+      "reviews": 1567,
+      "image": "https://www.franklincovey.com/wp-content/uploads/2023/11/book_7-habits_600x600.png",
+      "category": "**Literature**",
+      "description": "7 thói quen của những người thành đạt.",
+      "inStock": true,
+      "source": "new"
+    },
+    {
+      "id": "6",
+      "title": "Think and Grow Rich",
+      "author": "Napoleon Hill",
+      "price": 99000,
+      "originalPrice": 130000,
+      "discount": 24,
+      "rating": 4.7,
+      "reviews": 1245,
+      "image": "https://product.hstatic.net/200000900535/product/bo_sach_think_and_grow_rich__3__806e4b483e8045da9751b6fb99b700cd.jpg",
+      "category": "**Business & Economics**",
+      "description": "Bí quyết tư duy và làm giàu từ tác giả nổi tiếng.",
+      "inStock": true,
+      "source": "new"
+    },
+    {
+      "id": "7",
+      "title": "Nhà Giả Kim",
+      "author": "Paulo Coelho",
+      "price": 78000,
+      "originalPrice": 95000,
+      "discount": 18,
+      "rating": 4.9,
+      "reviews": 3456,
+      "image": "https://thptcuaviet.quangtri.edu.vn/upload/32292/fck/haminhqtri/%E1%BA%A3nh%20nh%C3%A0%20gi%E1%BA%A3%20kim.jpg",
+      "category": "**Literature**",
+      "description": "Câu chuyện cảm động về hành trình tìm kiếm kho báu.",
+      "inStock": true,
+      "source": "bestseller"
+    },
+    {
+      "id": "8",
+      "title": "Tuổi Trẻ Đáng Giá Bao Nhiêu",
+      "author": "Rosie Nguyễn",
+      "price": 85000,
+      "originalPrice": 110000,
+      "discount": 23,
+      "rating": 4.5,
+      "reviews": 2134,
+      "image": "https://static.ybox.vn/2025/6/3/1750206689883-tuoi-tre-dang-gia-bao-nhieu-1.png",
+      "category": "**Literature**",
+      "description": "Những suy ngẫm về tuổi trẻ và cuộc sống.",
+      "inStock": true,
+      "source": "bestseller"
+    },
+    {
+      "id": "9",
+      "title": "Rừng Na Uy",
+      "author": "Haruki Murakami",
+      "price": 115000,
+      "originalPrice": 145000,
+      "discount": 21,
+      "rating": 4.7,
+      "reviews": 320,
+      "image": "https://toplist.vn/images/800px/norwegian-wood-rung-na-uy-1200303.jpg",
+      "category": "**Literature**",
+      "description": "Một tiểu thuyết kinh điển của Haruki Murakami, kể về tình yêu, mất mát và nỗi cô đơn của tuổi trẻ ở Tokyo thập niên 60.",
+      "inStock": true,
+      "source": "new"
+    },
+    {
+      "id": "10",
+      "title": "The Intelligent Investor",
+      "author": "Benjamin Graham",
+      "price": 285000,
+      "originalPrice": 350000,
+      "discount": 19,
+      "rating": 4.9,
+      "reviews": 980,
+      "image": "https://5.imimg.com/data5/SELLER/Default/2022/10/YO/ZC/ZW/162021231/71279epp51s-500x500.jpg",
+      "category": "**Business & Economics**",
+      "description": "Cuốn sách được Warren Buffett đánh giá là cuốn sách hay nhất về đầu tư từng được viết, đặt nền móng cho triết lý đầu tư giá trị.",
+      "inStock": true,
+      "source": "new"
+    },
+    {
+      "id": "11",
+      "title": "Hoàng tử bé",
+      "author": "Antoine de Saint-Exupéry",
+      "price": 85000,
+      "originalPrice": 100000,
+      "discount": 15,
+      "rating": 4.9,
+      "reviews": 4500,
+      "image": "https://cdn1.fahasa.com/media/catalog/product/9/7/9786043946420.jpg",
+      "category": "**Children's**",
+      "description": "Cuốn sách kinh điển chứa đựng những triết lý sâu sắc về tình bạn, tình yêu và ý nghĩa cuộc sống qua góc nhìn trẻ thơ.",
+      "inStock": true,
+      "source": "bestseller"
+    },
+    {
+      "id": "12",
+      "title": "Charlie và Nhà máy Sô cô la",
+      "author": "Roald Dahl",
+      "price": 98000,
+      "originalPrice": 120000,
+      "discount": 18,
+      "rating": 4.8,
+      "reviews": 1120,
+      "image": "https://product.hstatic.net/1000075554/product/charlie-va-nha-may-so-co-la-6xo3v_a882cba90a9045059d54b889b06706d2_b400c4abbfbf409892423bdf1fdaaf25_grande.jpeg",
+      "category": "**Children's**",
+      "description": "Cuộc phiêu lưu kỳ diệu của cậu bé Charlie Bucket tại nhà máy sô cô la lập dị của Willy Wonka.",
+      "inStock": true,
+      "source": "new"
+    },
+    {
+      "id": "13",
+      "title": "Nhật ký chú bé nhút nhát Tập 1",
+      "author": "Jeff Kinney",
+      "price": 65000,
+      "originalPrice": 80000,
+      "discount": 18,
+      "rating": 4.5,
+      "reviews": 890,
+      "image": "https://salt.tikicdn.com/cache/w300/ts/product/dc/76/7a/f3b1754d22ef6b627e0862c0cc3dc98d.jpg",
+      "category": "**Children's**",
+      "description": "Những câu chuyện hài hước và gần gũi về tuổi học trò qua nhật ký của cậu bé Greg Heffley.",
+      "inStock": true,
+      "source": "new"
+    }
+  ],
+  "categories": [
+    {
+      "id": "van-hoc",
+      "name": "**Literature**",
+      "bookCount": 2500,
+      "icon": "fas fa-book"
+    },
+    {
+      "id": "giao-duc",
+      "name": "**Education**",
+      "bookCount": 1800,
+      "icon": "fas fa-graduation-cap"
+    },
+    {
+      "id": "kinh-te",
+      "name": "**Business & Economics**",
+      "bookCount": 1200,
+      "icon": "fas fa-chart-line"
+    },
+    {
+      "id": "cong-nghe",
+      "name": "**Technology**",
+      "bookCount": 900,
+      "icon": "fas fa-laptop-code"
+    },
+    {
+      "id": "thieu-nhi",
+      "name": "**Children's**",
+      "bookCount": 1500,
+      "icon": "fas fa-child"
+    }
+  ],
+  "promotions": {
+    "specialOffer": {
+      "title": "SPECIAL OFFER",
+      "description": "Up to 50% OFF on All Literature Books",
+      "startDate": "15/09/2025",
+      "endDate": "30/09/2025",
+      "countdown": {
+        "days": 15,
+        "hours": 8,
+        "minutes": 42,
+        "seconds": 30
+      }
+    }
+  },
+  "stats": {
+    "totalBooks": "50K+",
+    "customers": "100K+",
+    "support": "24/7",
+    "satisfaction": "99%"
+  },
+  "users": [
+    {
+      "id": "u_admin",
+      "email": "admin@example.com",
+      "password": "$hashed$admin",
+      "name": "System Admin",
+      "role": "admin",
+      "status": "active",
+      "createdAt": "2024-01-01T09:00:00+07:00",
+      "profile": {
+        "phone": "+840000000001",
+        "address": "Hanoi, Vietnam"
+      }
+    },
+    {
+      "id": "u_seller_1",
+      "email": "seller1@example.com",
+      "password": "$hashed$seller1",
+      "name": "Nguyen Van A",
+      "role": "seller",
+      "status": "approved",
+      "createdAt": "2024-06-15T10:30:00+07:00",
+      "profile": {
+        "shopName": "A Bookstore",
+        "phone": "+840869386183",
+        "address": "Ho Chi Minh City",
+        "bio": "Chuyên sách văn học và học thuật",
+        "sellerSettings": {
+          "autoApproveOrders": false,
+          "lowStockThreshold": 5
+        }
+      }
+    },
+    {
+      "id": "u_customer_1",
+      "email": "customer1@example.com",
+      "password": "$hashed$customer1",
+      "name": "Le Thi B",
+      "role": "customer",
+      "status": "active",
+      "createdAt": "2024-07-20T14:10:00+07:00",
+      "profile": {
+        "phone": "+84901234567",
+        "address": "Da Nang"
+      }
+    },
+    {
+      "id": "u_1762502861595",
+      "name": "khôi nguyên ",
+      "email": "khoinguyen@gmail.com",
+      "password": "Khoinguyen123",
+      "role": "customer",
+      "createdAt": "2025-11-07T08:07:41.595Z"
+    },
+    {
+      "id": "u_1762503333631",
+      "name": "nguyen",
+      "email": "test@example",
+      "password": "Khongbiet1",
+      "role": "customer",
+      "createdAt": "2025-11-07T08:15:33.631Z"
+    },
+    {
+      "id": "u_1762539247891",
+      "name": "bi ",
+      "email": "bi@gmail.com",
+      "password": "bi123456",
+      "role": "customer",
+      "createdAt": "2025-11-07T18:14:07.891Z"
+    },
+    {
+      "id": "u_1762540038234",
+      "name": "khoinguyen",
+      "email": "khoinguyen17062002@gmail.com",
+      "password": "Nguyen6",
+      "role": "customer",
+      "createdAt": "2025-11-07T18:27:18.234Z",
+      "passwordHash": ""
+    },
+    {
+      "id": "u_1762697566489",
+      "name": "Ichiro",
+      "email": "marisboy2606@gmail.com",
+      "password": "chiquynh2606",
+      "role": "customer",
+      "createdAt": "2025-11-09T14:12:46.489Z"
+    }
+  ],
+  "publishers": [
+    {
+      "id": "p_vnpub_1",
+      "name": "NXB Trẻ",
+      "country": "Vietnam"
+    },
+    {
+      "id": "p_international_1",
+      "name": "Global Press",
+      "country": "UK"
+    }
+  ],
+  "inventory": [
+    {
+      "id": "inv_1",
+      "sellerId": "u_seller_1",
+      "bookId": "b_001",
+      "sku": "BK-0001-S1",
+      "quantity": 12,
+      "reserved": 0,
+      "lowStockThreshold": 5,
+      "updatedAt": "2025-10-31T12:00:00+07:00"
+    },
+    {
+      "id": "inv_2",
+      "sellerId": "u_seller_1",
+      "bookId": "b_002",
+      "sku": "BK-0002-S1",
+      "quantity": 3,
+      "reserved": 0,
+      "lowStockThreshold": 2,
+      "updatedAt": "2025-10-31T12:00:00+07:00"
+    }
+  ],
+  "orders": [
+    {
+      "id": "o_1001",
+      "orderCode": "ORD202511010001",
+      "customerId": "u_customer_1",
+      "email": "customer1@example.com",
+      "items": [
+        {
+          "bookId": "b_001",
+          "sellerId": "u_seller_1",
+          "quantity": 1,
+          "unitPrice": 120000
+        }
+      ],
+      "subtotal": 120000,
+      "discount": 0,
+      "shippingFee": 25000,
+      "total": 145000,
+      "currency": "VND",
+      "status": "confirmed",
+      "paymentStatus": "paid",
+      "createdAt": "2025-11-01T14:05:00+07:00",
+      "updatedAt": "2025-11-01T14:10:00+07:00",
+      "shipping": {
+        "address": "Da Nang, Vietnam",
+        "trackingNumber": null,
+        "carrier": null
+      }
+    }
+  ],
+  "orderEvents": [
+    {
+      "id": "oe_1",
+      "orderId": "o_1001",
+      "event": "order_created",
+      "by": "system",
+      "meta": {},
+      "createdAt": "2025-11-01T14:05:00+07:00"
+    },
+    {
+      "id": "oe_2",
+      "orderId": "o_1001",
+      "event": "payment_received",
+      "by": "payment_gateway",
+      "meta": {
+        "transactionId": "tx_9001"
+      },
+      "createdAt": "2025-11-01T14:06:00+07:00"
+    }
+  ],
+  "payments": [
+    {
+      "id": "pay_9001",
+      "orderId": "o_1001",
+      "method": "credit_card",
+      "amount": 145000,
+      "currency": "VND",
+      "status": "paid",
+      "providerMeta": {
+        "gateway": "MockPay",
+        "transactionId": "tx_9001"
+      },
+      "createdAt": "2025-11-01T14:06:00+07:00"
+    }
+  ],
+  "vouchers": [
+    {
+      "id": "v_global_10",
+      "code": "WELCOME10",
+      "type": "percentage",
+      "value": 10,
+      "appliesTo": "global",
+      "validFrom": "2025-01-01",
+      "validTo": "2025-12-31",
+      "usageLimit": 1000,
+      "usedCount": 20,
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "v_seller_1_5k",
+      "code": "A5KOFF",
+      "type": "amount",
+      "value": 5000,
+      "appliesTo": "seller",
+      "sellerId": "u_seller_1",
+      "validFrom": "2025-05-01",
+      "validTo": "2025-12-31",
+      "usageLimit": 500
+    }
+  ],
+  "blogPosts": [
+    {
+      "title": "5 cuốn sách văn học bạn nên đọc năm 2025",
+      "excerpt": "Gợi ý 5 tác phẩm mới và kinh điển...",
+      "content": "<p>Nội dung bài viết hỗ trợ HTML cơ bản, có thể gắn link sản phẩm.</p>",
+      "featuredImage": "/assets/blogs/post_001.jpg",
+      "category": "Điểm sách",
+      "tags": [
+        "Điểm sách",
+        "Văn học"
+      ],
+      "linkedProductIds": [
+        "b_001"
+      ],
+      "visible": true,
+      "authorId": "u_admin",
+      "id": "post_001"
+    },
+    {
+      "id": "post_002",
+      "title": "dfdf",
+      "excerpt": "ffdfdfd",
+      "content": "dfdf",
+      "featuredImage": "data:image/png;base64,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",
+      "category": "fdfd",
+      "tags": [
+        "ffđ"
+      ],
+      "visible": true,
+      "linkedProductIds": [
+        "b_002"
+      ],
+      "authorId": "u_admin"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n_1",
+      "recipientId": "u_seller_1",
+      "type": "low_stock_alert",
+      "title": "Sách sắp hết hàng",
+      "message": "Sản phẩm 'Basics of Modern Economics' (b_002) chỉ còn 3 chiếc trong kho.",
+      "meta": {
+        "bookId": "b_002",
+        "inventoryId": "inv_2",
+        "quantity": 3
+      },
+      "read": false,
+      "createdAt": "2025-10-31T12:01:00+07:00"
+    }
+  ],
+  "reports": [
+    {
+      "id": "r_1",
+      "type": "seller_revenue",
+      "sellerId": "u_seller_1",
+      "period": {
+        "from": "2025-01-01",
+        "to": "2025-10-31"
+      },
+      "metrics": {
+        "grossRevenue": 4500000,
+        "netRevenue": 4050000,
+        "orders": 120
+      }
+    }
+  ],
+  "settings": {
+    "paymentMethods": [
+      "credit_card",
+      "bank_transfer",
+      "cod"
+    ],
+    "orderCodePrefix": "ORD",
+    "orderCodeDateFormat": "YYYYMMDD",
+    "defaultCurrency": "VND",
+    "lowStockGlobalThreshold": 3
+  },
+  "auditLogs": [],
+  "examples": {
+    "howToAddBook": "create a new document in books and corresponding inventory entry for the seller",
+    "howStockReduces": "When order status moves to 'confirmed' or 'paid', subtract ordered quantity from inventory.quantity and increase inventory.reserved temporarily when order is created.",
+    "bestSellerCalculation": "Sort books by salesCount (or compute by summing sold quantities from orderEvents)."
+  }
+}
