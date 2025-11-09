@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import BookCard from "../components/BookCard";
 import { fetchDatabase } from "../../services/api";
@@ -9,44 +9,82 @@ function ProductList() {
   const location = useLocation();
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
-  const [category, setCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [filters, setFilters] = useState({
+    category: "",
+    author: "",
+    priceRange: "",
+  });
+  const [sortBy, setSortBy] = useState("default");
   const [loading, setLoading] = useState(true);
 
+  // 🧠 Load dữ liệu
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const categoryParam = params.get("category");
-    setCategory(categoryParam);
-  }, [location.search]);
-
-  useEffect(() => {
-    const loadBooks = async () => {
+    const loadData = async () => {
       try {
         const data = await fetchDatabase();
         setBooks(data.books);
+        setCategories(data.categories);
       } catch (err) {
-        console.error("Failed to load books:", err);
+        console.error("Failed to load data:", err);
       } finally {
         setLoading(false);
       }
     };
-    loadBooks();
+    loadData();
   }, []);
 
+  // 🧩 Lấy danh sách tác giả duy nhất
+  const authors = [...new Set(books.map((b) => b.author))];
+
+  // 🎯 Lọc & Sắp xếp
   useEffect(() => {
-    if (!books.length) return;
+    let result = [...books];
 
-    if (category) {
-      const normalized = category.trim().toLowerCase();
-      const filtered = books.filter(
-        (b) =>
-          b.category.replace(/\*/g, "").trim().toLowerCase() === normalized
+    // Lọc theo danh mục
+    if (filters.category) {
+      result = result.filter(
+        (b) => b.category.replace(/\*/g, "").trim() === filters.category
       );
-      setFilteredBooks(filtered);
-    } else {
-      setFilteredBooks(books);
     }
-  }, [books, category]);
 
+    // Lọc theo tác giả
+    if (filters.author) {
+      result = result.filter((b) => b.author === filters.author);
+    }
+
+    // Lọc theo khoảng giá
+    if (filters.priceRange) {
+      switch (filters.priceRange) {
+        case "low":
+          result = result.filter((b) => b.price <= 150000);
+          break;
+        case "mid":
+          result = result.filter((b) => b.price > 150000 && b.price <= 300000);
+          break;
+        case "high":
+          result = result.filter((b) => b.price > 300000);
+          break;
+        default:
+          break;
+      }
+    }
+
+    // Sắp xếp
+    if (sortBy === "priceAsc") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "priceDesc") {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "bestseller") {
+      result = result.filter((b) => b.source === "bestseller");
+    } else if (sortBy === "newest") {
+      result = result.filter((b) => b.source === "new");
+    }
+
+    setFilteredBooks(result);
+  }, [filters, sortBy, books]);
+
+  // 🌀 Loading
   if (loading) {
     return (
       <div
@@ -68,38 +106,114 @@ function ProductList() {
   }
 
   return (
-    <div>
-      {/* 🧭 Navbar */}
+    <>
       <Navbar />
 
-      {/* 📚 Product List */}
-      <Container style={{ padding: "100px 0" }}>
-        <div className="text-center mb-5">
-          <h2 style={{ fontWeight: "700" }}>
-            {category ? `${category} Books` : "All Books"}
-          </h2>
-          <div
-            style={{
-              width: "80px",
-              height: "4px",
-              backgroundColor: "#000",
-              margin: "10px auto 30px auto",
-            }}
-          ></div>
-        </div>
-
+      <Container style={{ padding: "80px 0" }}>
         <Row>
-          {filteredBooks.length > 0 ? (
-            filteredBooks.map((book) => (
-              <Col lg={3} md={6} className="mb-4" key={book.id}>
-                <BookCard book={book} />
-              </Col>
-            ))
-          ) : (
-            <div className="text-center">
-              <p>No books found for this category.</p>
+          {/* 🎚️ Sidebar Filter */}
+          <Col md={3}>
+            <div className="p-3 shadow-sm rounded bg-light">
+              <h5 className="fw-bold mb-3">Filters</h5>
+
+              {/* Danh mục */}
+              <Form.Group className="mb-3">
+                <Form.Label>Category</Form.Label>
+                <Form.Select
+                  value={filters.category}
+                  onChange={(e) =>
+                    setFilters({ ...filters, category: e.target.value })
+                  }
+                >
+                  <option value="">All</option>
+                  {categories.map((cat) => (
+                    <option
+                      key={cat.id}
+                      value={cat.name.replace(/\*/g, "").trim()}
+                    >
+                      {cat.name.replace(/\*/g, "")}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              {/* Tác giả */}
+              <Form.Group className="mb-3">
+                <Form.Label>Author</Form.Label>
+                <Form.Select
+                  value={filters.author}
+                  onChange={(e) =>
+                    setFilters({ ...filters, author: e.target.value })
+                  }
+                >
+                  <option value="">All</option>
+                  {authors.map((author, i) => (
+                    <option key={i} value={author}>
+                      {author}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              {/* Khoảng giá */}
+              <Form.Group className="mb-3">
+                <Form.Label>Price Range</Form.Label>
+                <Form.Select
+                  value={filters.priceRange}
+                  onChange={(e) =>
+                    setFilters({ ...filters, priceRange: e.target.value })
+                  }
+                >
+                  <option value="">All</option>
+                  <option value="low">0 - 150,000₫</option>
+                  <option value="mid">150,000₫ - 300,000₫</option>
+                  <option value="high">Above 300,000₫</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Button
+                variant="dark"
+                className="w-100"
+                onClick={() =>
+                  setFilters({ category: "", author: "", priceRange: "" })
+                }
+              >
+                Reset Filters
+              </Button>
             </div>
-          )}
+          </Col>
+
+          {/* 📚 Book List */}
+          <Col md={9}>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h4 className="fw-bold">Book Collection</h4>
+              <Form.Select
+                style={{ width: "220px" }}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="default">Sort by</option>
+                <option value="priceAsc">Price: Low to High</option>
+                <option value="priceDesc">Price: High to Low</option>
+                <option value="bestseller">Best Sellers</option>
+                <option value="newest">Newest Books</option>
+              </Form.Select>
+            </div>
+
+            <Row>
+              {filteredBooks.length > 0 ? (
+                filteredBooks.map((book) => (
+                  <Col lg={4} md={6} className="mb-4" key={book.id}>
+                    <BookCard book={book} />
+                  </Col>
+                ))
+              ) : (
+                <div className="text-center mt-5">
+                  <p>No books found.</p>
+                </div>
+              )}
+            </Row>
+          </Col>
         </Row>
       </Container>
 
@@ -107,210 +221,20 @@ function ProductList() {
       <footer style={{ backgroundColor: "#000", color: "white", padding: "40px 0" }}>
         <Container>
           <Row>
-            <Col md={3}>
-              <div className="d-flex align-items-center mb-3">
-                <div
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    background:
-                      "linear-gradient(45deg, #fff, #f8f9fa, #e9ecef)",
-                    borderRadius: "4px",
-                    marginRight: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <i
-                    className="fas fa-book"
-                    style={{ color: "#333", fontSize: "16px" }}
-                  ></i>
-                </div>
-                <span style={{ fontSize: "20px", fontWeight: "600" }}>
-                  The Reading Nook
-                </span>
-              </div>
-              <p style={{ fontSize: "14px", color: "#e9ecef" }}>
-                Vietnam's leading online bookstore. We provide thousands of
-                quality books at the best prices.
+            <Col md={6}>
+              <h5 className="fw-bold">The Reading Nook</h5>
+              <p>
+                Vietnam's leading online bookstore. Thousands of quality books at the best prices.
               </p>
             </Col>
-            <Col md={3}>
-              <h6 style={{ fontWeight: "600", marginBottom: "16px" }}>
-                Categories
-              </h6>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#van-hoc"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Literature
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#kinh-te"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Economics
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#khoa-hoc"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Science
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#thieu-nhi"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Children
-                  </a>
-                </li>
-              </ul>
-            </Col>
-            <Col md={3}>
-              <h6 style={{ fontWeight: "600", marginBottom: "16px" }}>
-                Support
-              </h6>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#lien-he"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Contact
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#huong-dan"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Guide
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#chinh-sach"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Policy
-                  </a>
-                </li>
-                <li style={{ marginBottom: "8px" }}>
-                  <a
-                    href="#faq"
-                    style={{
-                      color: "#e9ecef",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                    }}
-                  >
-                    FAQ
-                  </a>
-                </li>
-              </ul>
-            </Col>
-            <Col md={3}>
-              <h6 style={{ fontWeight: "600", marginBottom: "16px" }}>
-                Subscribe
-              </h6>
-              <p
-                style={{
-                  fontSize: "14px",
-                  color: "#e9ecef",
-                  marginBottom: "16px",
-                }}
-              >
-                Get information about new books and special offers
-              </p>
-              <div className="d-flex">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  style={{
-                    flex: 1,
-                    padding: "8px 12px",
-                    border: "1px solid #555",
-                    borderRadius: "4px 0 0 4px",
-                    fontSize: "14px",
-                  }}
-                />
-                <Button
-                  style={{
-                    backgroundColor: "#fff",
-                    color: "#000",
-                    border: "none",
-                    borderRadius: "0 4px 4px 0",
-                    padding: "8px 16px",
-                  }}
-                >
-                  Subscribe
-                </Button>
-              </div>
+            <Col md={6} className="text-md-end">
+              <p className="mb-1">© 2025 The Reading Nook. All rights reserved.</p>
+              <small>Designed by GROUP 2</small>
             </Col>
           </Row>
-
-          <hr style={{ margin: "30px 0", borderColor: "#555" }} />
-
-          <div className="text-center">
-            <p style={{ margin: 0, fontSize: "14px", color: "#e9ecef" }}>
-              © 2025 The Reading Nook. All rights reserved.
-            </p>
-            <div className="mt-2">
-              <span style={{ fontSize: "14px", color: "#e9ecef" }}>
-                Designed by
-              </span>
-              <a
-                href="#team"
-                style={{
-                  color: "#fff",
-                  textDecoration: "none",
-                  marginLeft: "4px",
-                }}
-              >
-                GROUP 2
-              </a>
-            </div>
-          </div>
         </Container>
       </footer>
-    </div>
+    </>
   );
 }
 
