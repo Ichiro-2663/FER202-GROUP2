@@ -269,7 +269,7 @@
       "password": "$hashed$seller1",
       "name": "Nguyen Van A",
       "role": "seller",
-      "status": "approved",
+      "status": "active",
       "createdAt": "2024-06-15T10:30:00+07:00",
       "profile": {
         "shopName": "A Bookstore",
@@ -347,7 +347,8 @@
       "email": "nguyenkhoi@gmail.com",
       "password": "nguyen1",
       "role": "customer",
-      "createdAt": "2025-11-10T17:37:56.182Z"
+      "createdAt": "2025-11-10T17:37:56.182Z",
+      "status": "active"
     },
     {
       "id": "u_1762796464016",
