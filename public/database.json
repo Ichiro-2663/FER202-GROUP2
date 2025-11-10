@@ -253,7 +253,7 @@
     {
       "id": "u_admin",
       "email": "admin@example.com",
-      "password": "$hashed$admin",
+      "password": "admin123",
       "name": "System Admin",
       "role": "admin",
       "status": "active",
