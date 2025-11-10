@@ -228,7 +228,6 @@
       "bookCount": 1500,
       "icon": "fas fa-child"
     }
-    
   ],
   "promotions": {
     "specialOffer": {
@@ -302,6 +301,7 @@
       "email": "khoinguyen@gmail.com",
       "password": "Khoinguyen123",
       "role": "customer",
+      "status": "active",
       "createdAt": "2025-11-07T08:07:41.595Z"
     },
     {
@@ -310,6 +310,7 @@
       "email": "test@example",
       "password": "Khongbiet1",
       "role": "customer",
+      "status": "active",
       "createdAt": "2025-11-07T08:15:33.631Z"
     },
     {
@@ -318,6 +319,7 @@
       "email": "bi@gmail.com",
       "password": "bi123456",
       "role": "customer",
+      "status": "active",
       "createdAt": "2025-11-07T18:14:07.891Z"
     },
     {
@@ -326,6 +328,7 @@
       "email": "khoinguyen17062002@gmail.com",
       "password": "Nguyen6",
       "role": "customer",
+      "status": "active",
       "createdAt": "2025-11-07T18:27:18.234Z",
       "passwordHash": ""
     },
@@ -335,6 +338,7 @@
       "email": "marisboy2606@gmail.com",
       "password": "chiquynh2606",
       "role": "customer",
+      "status": "active",
       "createdAt": "2025-11-09T14:12:46.489Z"
     }
   ],
@@ -460,6 +464,17 @@
       "validFrom": "2025-05-01",
       "validTo": "2025-12-31",
       "usageLimit": 500
+    },
+    {
+      "id": "6fbd",
+      "code": "Welcome",
+      "type": "percentage",
+      "value": 5,
+      "validFrom": "2025-11-10",
+      "validTo": "2025-11-12",
+      "usageLimit": 100,
+      "createdBy": "u_admin",
+      "appliesTo": "global"
     }
   ],
   "blogPosts": [

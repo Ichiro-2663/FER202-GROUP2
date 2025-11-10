@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function AdminProfile() {
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -30,6 +30,17 @@ function AdminProfile() {
   }, []);
 
   const handleSave = () => {
+    if (!admin.email || !admin.email.includes("@")) {
+      alert("❌ Invalid email. Email must contain '@' and cannot be empty.");
+      setAdmin({ ...admin, email: "" }); // Clear email field
+      return;
+    }
+
+    if (!admin.name || admin.name.trim() === "") {
+      alert("❌ Full name cannot be empty.");
+      return;
+    }
+
     axios
       .put(`http://localhost:9999/users/${admin.id}`, admin)
       .then(() => {
@@ -40,6 +51,7 @@ function AdminProfile() {
         alert("❌ Something went wrong. Check again.");
       });
   };
+
 
   return (
     <DashboardLayout sidebar={<Sidebar />}>

@@ -9,6 +9,7 @@ import {
   Col,
   Badge,
   Pagination,
+  Button,
 } from "react-bootstrap";
 import Sidebar from "../../components/Sidebar";
 import DashboardLayout from "../../components/DashboardLayout";
@@ -19,6 +20,7 @@ function ManageAccount() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
@@ -64,7 +66,7 @@ function ManageAccount() {
       case "approved":
         return <Badge bg="primary">Approved</Badge>;
       case "disabled":
-        return <Badge bg="danger">Disabled</Badge>;
+        return <Badge bg="danger">Locked</Badge>;
       default:
         return <Badge bg="secondary">Unknown</Badge>;
     }
@@ -77,7 +79,8 @@ function ManageAccount() {
         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchRole = filterRole ? user.role === filterRole : true;
-      return matchSearch && matchRole;
+      const matchStatus = filterStatus ? user.status === filterStatus : true;
+      return matchSearch && matchRole && matchStatus;
     });
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -86,11 +89,9 @@ function ManageAccount() {
     currentPage * itemsPerPage
   );
 
-  const handleDisableChange = (userId, value) => {
+  const updateUserStatus = (userId, newStatus) => {
     const updatedUser = users.find((u) => u.id === userId);
     if (!updatedUser) return;
-
-    const newStatus = value === "disabled" ? "disabled" : "active";
 
     axios
       .put(`http://localhost:9999/users/${userId}`, {
@@ -105,8 +106,33 @@ function ManageAccount() {
       })
       .catch((error) => {
         console.error("Error updating status:", error);
-        alert("Failed to update status.");
+        alert("Failed to update account status.");
       });
+  };
+
+  const handleToggleLock = (user) => {
+    const isLocked = user.status === "disabled";
+    const confirmText = isLocked
+      ? "Are you sure you want to unlock this account?"
+      : "Are you sure you want to lock this account?";
+    if (window.confirm(confirmText)) {
+      const newStatus = isLocked ? "active" : "disabled";
+      updateUserStatus(user.id, newStatus);
+    }
+  };
+
+  const handleDeleteAccount = (userId) => {
+    if (window.confirm("Are you sure you want to delete this account?")) {
+      axios
+        .delete(`http://localhost:9999/users/${userId}`)
+        .then(() => {
+          setUsers(users.filter((u) => u.id !== userId));
+        })
+        .catch((error) => {
+          console.error("Error deleting account:", error);
+          alert("Failed to delete account.");
+        });
+    }
   };
 
   return (
@@ -115,7 +141,7 @@ function ManageAccount() {
 
       {/* Search and filter */}
       <Row className="mb-3">
-        <Col md={8}>
+        <Col md={6}>
           <Form.Control
             type="search"
             placeholder="Search by email or name..."
@@ -126,7 +152,7 @@ function ManageAccount() {
             }}
           />
         </Col>
-        <Col md={4}>
+        <Col md={3}>
           <Form.Select
             value={filterRole}
             onChange={(e) => {
@@ -137,6 +163,20 @@ function ManageAccount() {
             <option value="">All roles</option>
             <option value="seller">Seller</option>
             <option value="customer">Customer</option>
+          </Form.Select>
+        </Col>
+        <Col md={3}>
+          <Form.Select
+            value={filterStatus}
+            onChange={(e) => {
+              setFilterStatus(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">All statuses</option>
+            <option value="active">Active</option>
+            <option value="approved">Approved</option>
+            <option value="disabled">Locked</option>
           </Form.Select>
         </Col>
       </Row>
@@ -160,7 +200,7 @@ function ManageAccount() {
                     <th>Name</th>
                     <th>Role</th>
                     <th>Status</th>
-                    <th>Disabled?</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -171,16 +211,25 @@ function ManageAccount() {
                       <td>{getRoleLabel(user.role)}</td>
                       <td>{getStatusBadge(user.status)}</td>
                       <td>
-                        <Form.Select
+                        <Button
+                          variant={user.status === "disabled" ? "success" : "warning"}
                           size="sm"
-                          value={user.status === "disabled" ? "disabled" : "none"}
-                          onChange={(e) =>
-                            handleDisableChange(user.id, e.target.value)
-                          }
+                          className="me-2"
+                          onClick={() => handleToggleLock(user)}
                         >
-                          <option value="none">None</option>
-                          <option value="disabled">Disabled</option>
-                        </Form.Select>
+                          <i
+                            className={`fas ${
+                              user.status === "disabled" ? "fa-unlock" : "fa-lock"
+                            }`}
+                          ></i>
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDeleteAccount(user.id)}
+                        >
+                          <i className="fas fa-trash"></i>
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -209,6 +258,7 @@ function ManageAccount() {
 
 export default ManageAccount;
 
+
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
 // import {
@@ -219,24 +269,31 @@ export default ManageAccount;
 //   Row,
 //   Col,
 //   Badge,
+//   Pagination,
+//   Button,
 // } from "react-bootstrap";
 // import Sidebar from "../../components/Sidebar";
 // import DashboardLayout from "../../components/DashboardLayout";
 // import { useNavigate } from "react-router-dom";
+
 // function ManageAccount() {
 //   const [users, setUsers] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [searchTerm, setSearchTerm] = useState("");
 //   const [filterRole, setFilterRole] = useState("");
-//  const navigate = useNavigate();
+//   const [filterStatus, setFilterStatus] = useState("");
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 5;
+//   const navigate = useNavigate();
 
 //   useEffect(() => {
 //     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 //     if (!currentUser || currentUser.role !== "admin") {
 //       alert("You don't have permission to access this page!");
-//       navigate("/"); // return to home page
+//       navigate("/");
 //     }
 //   }, [navigate]);
+
 //   useEffect(() => {
 //     axios
 //       .get("http://localhost:9999/users")
@@ -270,7 +327,7 @@ export default ManageAccount;
 //       case "approved":
 //         return <Badge bg="primary">Approved</Badge>;
 //       case "disabled":
-//         return <Badge bg="danger">Disabled</Badge>;
+//         return <Badge bg="danger">Locked</Badge>;
 //       default:
 //         return <Badge bg="secondary">Unknown</Badge>;
 //     }
@@ -282,33 +339,53 @@ export default ManageAccount;
 //       const matchSearch =
 //         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
 //         user.name.toLowerCase().includes(searchTerm.toLowerCase());
-
 //       const matchRole = filterRole ? user.role === filterRole : true;
-
-//       return matchSearch && matchRole;
+//       const matchStatus = filterStatus
+//         ? user.status === filterStatus
+//         : true;
+//       return matchSearch && matchRole && matchStatus;
 //     });
 
-//   const handleDisableChange = (userId, value) => {
-//     const updatedUser = users.find((u) => u.id === userId);
-//     if (!updatedUser) return;
+//   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+//   const paginatedUsers = filteredUsers.slice(
+//     (currentPage - 1) * itemsPerPage,
+//     currentPage * itemsPerPage
+//   );
 
-//     const newStatus = value === "disabled" ? "disabled" : "active";
+//   const handleLockAccount = (userId) => {
+//     if (window.confirm("Are you sure you want to lock this account?")) {
+//       const updatedUser = users.find((u) => u.id === userId);
+//       if (!updatedUser) return;
+//       axios
+//         .put(`http://localhost:9999/users/${userId}`, {
+//           ...updatedUser,
+//           status: "disabled",
+//         })
+//         .then(() => {
+//           const updatedList = users.map((u) =>
+//             u.id === userId ? { ...u, status: "disabled" } : u
+//           );
+//           setUsers(updatedList);
+//         })
+//         .catch((error) => {
+//           console.error("Error locking account:", error);
+//           alert("Failed to lock account.");
+//         });
+//     }
+//   };
 
-//     axios
-//       .put(`http://localhost:9999/users/${userId}`, {
-//         ...updatedUser,
-//         status: newStatus,
-//       })
-//       .then(() => {
-//         const updatedList = users.map((u) =>
-//           u.id === userId ? { ...u, status: newStatus } : u
-//         );
-//         setUsers(updatedList);
-//       })
-//       .catch((error) => {
-//         console.error("Error updating status:", error);
-//         alert("Failed to update status.");
-//       });
+//   const handleDeleteAccount = (userId) => {
+//     if (window.confirm("Are you sure you want to delete this account?")) {
+//       axios
+//         .delete(`http://localhost:9999/users/${userId}`)
+//         .then(() => {
+//           setUsers(users.filter((u) => u.id !== userId));
+//         })
+//         .catch((error) => {
+//           console.error("Error deleting account:", error);
+//           alert("Failed to delete account.");
+//         });
+//     }
 //   };
 
 //   return (
@@ -317,22 +394,41 @@ export default ManageAccount;
 
 //       {/* Search and filter */}
 //       <Row className="mb-3">
-//         <Col md={8}>
+//         <Col md={6}>
 //           <Form.Control
 //             type="search"
 //             placeholder="Search by email or name..."
 //             value={searchTerm}
-//             onChange={(e) => setSearchTerm(e.target.value)}
+//             onChange={(e) => {
+//               setSearchTerm(e.target.value);
+//               setCurrentPage(1);
+//             }}
 //           />
 //         </Col>
-//         <Col md={4}>
+//         <Col md={3}>
 //           <Form.Select
 //             value={filterRole}
-//             onChange={(e) => setFilterRole(e.target.value)}
+//             onChange={(e) => {
+//               setFilterRole(e.target.value);
+//               setCurrentPage(1);
+//             }}
 //           >
 //             <option value="">All roles</option>
 //             <option value="seller">Seller</option>
 //             <option value="customer">Customer</option>
+//           </Form.Select>
+//         </Col>
+//         <Col md={3}>
+//           <Form.Select
+//             value={filterStatus}
+//             onChange={(e) => {
+//               setFilterStatus(e.target.value);
+//               setCurrentPage(1);
+//             }}
+//           >
+//             <option value="">All statuses</option>
+//             <option value="active">Active</option>
+//             <option value="disabled">Locked</option>
 //           </Form.Select>
 //         </Col>
 //       </Row>
@@ -348,39 +444,59 @@ export default ManageAccount;
 //               <p className="mt-3">Loading data...</p>
 //             </div>
 //           ) : (
-//             <Table striped bordered hover responsive>
-//               <thead>
-//                 <tr>
-//                   <th>Email</th>
-//                   <th>Name</th>
-//                   <th>Role</th>
-//                   <th>Status</th>
-//                   <th>Disabled?</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {filteredUsers.map((user) => (
-//                   <tr key={user.id}>
-//                     <td>{user.email}</td>
-//                     <td>{user.name}</td>
-//                     <td>{getRoleLabel(user.role)}</td>
-//                     <td>{getStatusBadge(user.status)}</td>
-//                     <td>
-//                       <Form.Select
-//                         size="sm"
-//                         value={user.status === "disabled" ? "disabled" : "none"}
-//                         onChange={(e) =>
-//                           handleDisableChange(user.id, e.target.value)
-//                         }
-//                       >
-//                         <option value="none">None</option>
-//                         <option value="disabled">Disabled</option>
-//                       </Form.Select>
-//                     </td>
+//             <>
+//               <Table striped bordered hover responsive>
+//                 <thead>
+//                   <tr>
+//                     <th>Email</th>
+//                     <th>Name</th>
+//                     <th>Role</th>
+//                     <th>Status</th>
+//                     <th>Actions</th>
 //                   </tr>
+//                 </thead>
+//                 <tbody>
+//                   {paginatedUsers.map((user) => (
+//                     <tr key={user.id}>
+//                       <td>{user.email}</td>
+//                       <td>{user.name}</td>
+//                       <td>{getRoleLabel(user.role)}</td>
+//                       <td>{getStatusBadge(user.status)}</td>
+//                       <td>
+//                         <Button
+//                           variant="warning"
+//                           size="sm"
+//                           className="me-2"
+//                           onClick={() => handleLockAccount(user.id)}
+//                         >
+//                           <i className="fas fa-lock"></i>
+//                         </Button>
+//                         <Button
+//                           variant="danger"
+//                           size="sm"
+//                           onClick={() => handleDeleteAccount(user.id)}
+//                         >
+//                           <i className="fas fa-trash"></i>
+//                         </Button>
+//                       </td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               </Table>
+
+//               {/* Pagination */}
+//               <Pagination>
+//                 {[...Array(totalPages)].map((_, i) => (
+//                   <Pagination.Item
+//                     key={i}
+//                     active={i + 1 === currentPage}
+//                     onClick={() => setCurrentPage(i + 1)}
+//                   >
+//                     {i + 1}
+//                   </Pagination.Item>
 //                 ))}
-//               </tbody>
-//             </Table>
+//               </Pagination>
+//             </>
 //           )}
 //         </Card.Body>
 //       </Card>
@@ -389,4 +505,3 @@ export default ManageAccount;
 // }
 
 // export default ManageAccount;
-
