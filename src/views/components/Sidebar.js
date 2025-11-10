@@ -15,7 +15,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="bg-dark text-white p-3 vh-100" style={{ width: "220px" }}>
+    <div className="bg-dark text-white p-3 vh-100" style={{ width: "220px", height: '100%' }}>
       <h4 className="text-center mb-4">Hello, Admin</h4>
       <Nav defaultActiveKey="/dashboard" className="flex-column">
         <Nav.Link href="/admin" className="text-white">Dashboard</Nav.Link>
