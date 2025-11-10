@@ -94,6 +94,7 @@ function Register() {
         email: formData.email,
         password: formData.password, // can be encrypted later
         role: "customer",
+        status:"ative",
         createdAt: new Date().toISOString(),
       }),
     });
