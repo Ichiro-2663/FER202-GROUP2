@@ -1,90 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Card } from "react-bootstrap";
 import axios from "axios";
+import { Card, Row, Col, Spinner, Table } from "react-bootstrap";
 import DashboardLayout from "../components/DashboardLayout";
-import SalerSidebar from "../components/SalerSidebar";
+import { useNavigate } from 'react-router-dom';
 
 function SalerDashboard() {
-  const [users, setUsers] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [sellerBooks, setSellerBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersResponse = await axios.get("http://localhost:9999/users");
-        const productsResponse = await axios.get("http://localhost:9999/books");
-        setUsers(usersResponse.data);
-        setProducts(productsResponse.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "seller") {
+      alert("You don't have permission to access this page!");
+      navigate("/"); // return to home page
+    } else {
+      axios.get("/database.json")
+        .then(res => {
+          const sellerInventory = res.data.inventory.filter(
+            (item) => item.sellerId === currentUser.id
+          );
+          const sellerBookIds = sellerInventory.map((item) => item.bookId);
+          const books = res.data.books.filter((book) =>
+            sellerBookIds.includes(book.id)
+          );
+          setSellerBooks(books);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error loading data:", error);
+          setLoading(false);
+        });
+    }
+  }, [navigate]);
 
   return (
-    <DashboardLayout sidebar={<SalerSidebar />}>
-      <Row>
-        <Col md={6}>
+    <DashboardLayout>
+      <h3 className="mb-4">Saler Dashboard</h3>
+
+      {loading ? (
+        <div className="text-center py-5">
+          <Spinner animation="border" variant="primary" />
+          <p className="mt-3">Loading...</p>
+        </div>
+      ) : (
+        <>
+          <Row>
+            <Col md={4}>
+              <Card bg="primary" text="white" className="mb-4">
+                <Card.Body>
+                  <Card.Title>Number of Your Books</Card.Title>
+                  <h2>{sellerBooks.length}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
           <Card>
             <Card.Header>
-              <h6 className="mb-0">
-                <i className="fas fa-users me-2"></i>
-                Users
-              </h6>
+              <strong>Your Books</strong>
             </Card.Header>
             <Card.Body>
-              {loading ? (
-                <p>Loading...</p>
+              {sellerBooks.length === 0 ? (
+                <p>You have no books for sale.</p>
               ) : (
                 <Table striped bordered hover responsive>
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user) => (
-                      <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={6}>
-          <Card>
-            <Card.Header>
-              <h6 className="mb-0">
-                <i className="fas fa-book me-2"></i>
-                Products
-              </h6>
-            </Card.Header>
-            <Card.Body>
-              {loading ? (
-                <p>Loading...</p>
-              ) : (
-                <Table striped bordered hover responsive>
-                  <thead>
-                    <tr>
-                      <th>Title</th>
+                      <th>No</th>
+                      <th>Name of book</th>
+                      <th>Author</th>
                       <th>Price</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {products.map((product) => (
-                      <tr key={product.id}>
-                        <td>{product.title}</td>
-                        <td>{product.price}</td>
+                    {sellerBooks.map((book, index) => (
+                      <tr key={book.id}>
+                        <td>{index + 1}</td>
+                        <td>{book.title}</td>
+                        <td>{book.author}</td>
+                        <td>{book.price.toLocaleString()} VND</td>
                       </tr>
                     ))}
                   </tbody>
@@ -92,11 +87,10 @@ function SalerDashboard() {
               )}
             </Card.Body>
           </Card>
-        </Col>
-      </Row>
+        </>
+      )}
     </DashboardLayout>
   );
 }
 
 export default SalerDashboard;
-
