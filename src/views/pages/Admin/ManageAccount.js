@@ -67,6 +67,8 @@ function ManageAccount() {
         return <Badge bg="primary">Approved</Badge>;
       case "disabled":
         return <Badge bg="danger">Locked</Badge>;
+      case "requested":
+        return <Badge bg="warning">Requested to Seller?</Badge>;
       default:
         return <Badge bg="secondary">Unknown</Badge>;
     }
@@ -90,25 +92,44 @@ function ManageAccount() {
   );
 
   const updateUserStatus = (userId, newStatus) => {
-    const updatedUser = users.find((u) => u.id === userId);
-    if (!updatedUser) return;
-
     axios
-      .put(`http://localhost:9999/users/${userId}`, {
-        ...updatedUser,
+      .patch(`http://localhost:9999/users/${userId}`, {
         status: newStatus,
       })
       .then(() => {
-        const updatedList = users.map((u) =>
-          u.id === userId ? { ...u, status: newStatus } : u
+        setUsers((prevUsers) =>
+          prevUsers.map((u) =>
+            u.id === userId ? { ...u, status: newStatus } : u
+          )
         );
-        setUsers(updatedList);
       })
       .catch((error) => {
         console.error("Error updating status:", error);
         alert("Failed to update account status.");
       });
   };
+
+  // const updateUserStatus = (userId, newStatus) => {
+  //   const updatedUser = users.find((u) => u.id === userId);
+  //   if (!updatedUser) return;
+
+  //   axios
+  //     .put(`http://localhost:9999/users/${userId}`, {
+  //       ...updatedUser,
+  //       status: newStatus,
+  //     })
+  //     .then(() => {
+  //       const updatedList = users.map((u) =>
+  //         u.id === userId ? { ...u, status: newStatus } : u
+  //       );
+  //       setUsers(updatedList);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error updating status:", error);
+  //       alert("Failed to update account status.");
+  //     });
+  // };
+
   const handleToggleLock = (user) => {
     const isLocked = user.status === "disabled";
     const confirmText = isLocked
@@ -116,24 +137,27 @@ function ManageAccount() {
       : "Are you sure you want to lock this account?";
     if (window.confirm(confirmText)) {
       let newStatus;
+
       if (isLocked) {
-        // Khi mở lại
-        if (user.role === "customer") {
-          newStatus = "active";
-        } else if (user.role === "seller") {
-          newStatus = "approved";
-        } else {
-          newStatus = "active"; // fallback cho các role khác
-        }
+        // Khi mở khóa thì trả về previousStatus
+        newStatus = user.previousStatus || "active";
       } else {
-        // Khi khóa lại
+        // Khi khóa lại thì lưu previousStatus
         newStatus = "disabled";
+        axios.patch(`http://localhost:9999/users/${user.id}`, {
+          previousStatus: user.status, // lưu trạng thái trước khi bị khóa
+          status: newStatus,
+        });
+        return;
       }
+
       updateUserStatus(user.id, newStatus);
     }
   };
 
   
+
+
 
   const handleDeleteAccount = (userId) => {
     if (window.confirm("Are you sure you want to delete this account?")) {
@@ -191,7 +215,9 @@ function ManageAccount() {
             <option value="active">Active</option>
             <option value="approved">Approved</option>
             <option value="disabled">Locked</option>
+            <option value="requested">Requested (Become Seller)</option>
           </Form.Select>
+
         </Col>
       </Row>
 
@@ -213,7 +239,7 @@ function ManageAccount() {
                     <th>Email</th>
                     <th>Name</th>
                     <th>Role</th>
-                    <th>Status</th>
+                    <th style={{ width: '200px' }}>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

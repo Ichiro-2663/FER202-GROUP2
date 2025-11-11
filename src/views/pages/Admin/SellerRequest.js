@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 function SellerRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -37,23 +37,76 @@ function SellerRequests() {
       });
   }, []);
 
- const handleAction = (userId, action) => {
-  const updatedStatus = action === "approve" ? "approved" : "rejected";
-  const updatedRole = action === "approve" ? "seller" : "user";
+  const handleAction = (userId, action) => {
+    let updatedStatus, updatedRole;
 
-  axios
-    .patch(`http://localhost:9999/users/${userId}`, {
-      status: updatedStatus,
-      role: updatedRole,
-    })
-    .then(() => {
-      setRequests((prev) => prev.filter((u) => u.id !== userId));
-    })
-    .catch((err) => {
-      console.error("Error updating status:", err);
-      alert("Failed to update user status.");
-    });
-};
+    if (action === "approve") {
+      updatedStatus = "approved";
+      updatedRole = "seller";
+    } else {
+      // Khi reject thì giữ role là customer, và status là "requested"
+      updatedStatus = "active"; // hoặc "request become seller" nếu bạn dùng tên này
+      updatedRole = "customer";
+    }
+
+    axios
+      .patch(`http://localhost:9999/users/${userId}`, {
+        status: updatedStatus,
+        role: updatedRole,
+      })
+      .then(() => {
+        setRequests((prev) => prev.filter((u) => u.id !== userId));
+      })
+      .catch((err) => {
+        console.error("Error updating status:", err);
+        alert("Failed to update user status.");
+      });
+  };
+
+
+  //   const handleAction = (userId, action) => {
+  //   let updatedStatus, updatedRole;
+
+  //   if (action === "approve") {
+  //     updatedStatus = "approved";
+  //     updatedRole = "seller";
+  //   } else {
+  //     // Khi reject thì trả về Active và role là user
+  //     updatedStatus = "active";
+  //     updatedRole = "user";
+  //   }
+
+  //   axios
+  //     .patch(`http://localhost:9999/users/${userId}`, {
+  //       status: updatedStatus,
+  //       role: updatedRole,
+  //     })
+  //     .then(() => {
+  //       setRequests((prev) => prev.filter((u) => u.id !== userId));
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error updating status:", err);
+  //       alert("Failed to update user status.");
+  //     });
+  // };
+
+  //  const handleAction = (userId, action) => {
+  //   const updatedStatus = action === "approve" ? "approved" : "rejected";
+  //   const updatedRole = action === "approve" ? "seller" : "user";
+
+  //   axios
+  //     .patch(`http://localhost:9999/users/${userId}`, {
+  //       status: updatedStatus,
+  //       role: updatedRole,
+  //     })
+  //     .then(() => {
+  //       setRequests((prev) => prev.filter((u) => u.id !== userId));
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error updating status:", err);
+  //       alert("Failed to update user status.");
+  //     });
+  // };
 
   return (
     <DashboardLayout sidebar={<SalerSidebar />} className="p-4">
@@ -77,8 +130,8 @@ function SellerRequests() {
                 <tr>
                   <th>Email</th>
                   <th>Name</th>
-                  <th>Shop Name</th>
-                  <th>Bio</th>
+                  <th>Role Current? </th>
+                  <th>Wants to be?</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -87,8 +140,8 @@ function SellerRequests() {
                   <tr key={user.id}>
                     <td>{user.email}</td>
                     <td>{user.name}</td>
-                    <td>{user.profile?.shopName || "N/A"}</td>
-                    <td>{user.profile?.bio || "N/A"}</td>
+                    <td>{user.role || "N/A"}</td>
+                    <td>seller</td>
                     <td>
                       <Button
                         variant="success"
