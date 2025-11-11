@@ -102,8 +102,8 @@ function Login() {
       // ✅ If admin, redirect to admin page
       if (foundUser.role === "admin") {
         navigate("/admin");
-        } else if (foundUser.role === "saler") {
-      navigate("/dashboardseller");
+        } else if (foundUser.role === "seller") {
+      navigate("/seller");
       } else {
         navigate("/"); // regular user
       }

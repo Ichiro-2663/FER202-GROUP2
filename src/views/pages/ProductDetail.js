@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react"; 
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
 import Navbar from "../components/Navbar";
-import { fetchBookById } from "../../services/api";
+import { fetchBookById, fetchFeedbacksByBookId, createFeedbackOnServer } from "../../services/api";
 
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [rate, setRate] = useState(5);
+  const [comment, setComment] = useState("");
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
 
   useEffect(() => {
     const loadBook = async () => {
@@ -16,6 +20,9 @@ function ProductDetail() {
       try {
         const data = await fetchBookById(id);
         setBook(data);
+        // Load feedbacks for this book (visible for everyone)
+        const fbs = await fetchFeedbacksByBookId(id);
+        setFeedbacks((fbs || []).filter(f => !f.hidden));
       } catch (error) {
         console.error("Error loading book:", error);
       }
@@ -23,6 +30,34 @@ function ProductDetail() {
     };
     loadBook();
   }, [id]);
+
+  const handleSubmitFeedback = async (e) => {
+    e.preventDefault();
+    if (!currentUser) {
+      alert("You must be logged in to submit feedback.");
+      return;
+    }
+    try {
+      const newFeedback = {
+        id: Date.now().toString(),
+        bookId: id,
+        userId: currentUser.id,
+        userName: currentUser.name || currentUser.email,
+        rate: Number(rate),
+        comment: comment.trim(),
+        createdAt: new Date().toISOString()
+      };
+      await createFeedbackOnServer(newFeedback);
+      setComment("");
+      setRate(5);
+      const fbs = await fetchFeedbacksByBookId(id);
+      setFeedbacks(fbs);
+      alert("Thanks for your feedback!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to submit feedback.");
+    }
+  };
 
   if (loading) {
     return (
@@ -136,6 +171,88 @@ function ProductDetail() {
                   Back to List
                 </Button>
               </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
+      {/* Feedback Section */}
+      <section style={{ padding: "20px 0 60px 0" }}>
+        <Container>
+          <Row>
+            <Col md={12}>
+              <h4 className="mb-3">Feedback</h4>
+              {feedbacks.length === 0 ? (
+                <p className="text-muted">No feedback yet.</p>
+              ) : (
+                feedbacks.map((fb) => (
+                  <Card className="mb-2" key={fb.id}>
+                    <Card.Body>
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          <strong>{fb.userName || "User"}</strong>{" "}
+                          <span className="text-muted" style={{ fontSize: "0.9rem" }}>
+                            {new Date(fb.createdAt).toLocaleString()}
+                          </span>
+                        </div>
+                        <div style={{ color: "#f1c40f" }}>
+                          {"★".repeat(Math.round(fb.rate || 0))}
+                          {"☆".repeat(5 - Math.round(fb.rate || 0))}
+                        </div>
+                      </div>
+                      <div className="mt-2">{fb.comment}</div>
+                    </Card.Body>
+                  </Card>
+                ))
+              )}
+            </Col>
+          </Row>
+
+          <Row className="mt-4">
+            <Col md={12}>
+              <Card className="p-3">
+                <h5 className="mb-3">Add your feedback</h5>
+                {!currentUser ? (
+                  <div className="text-muted">
+                    Please login to submit feedback.
+                  </div>
+                ) : (
+                  <Form onSubmit={handleSubmitFeedback}>
+                    <Row className="g-3">
+                      <Col md={3}>
+                        <Form.Group controlId="rate">
+                          <Form.Label>Rate</Form.Label>
+                          <Form.Select value={rate} onChange={(e) => setRate(e.target.value)}>
+                            <option value={5}>5 - Excellent</option>
+                            <option value={4}>4 - Good</option>
+                            <option value={3}>3 - Average</option>
+                            <option value={2}>2 - Poor</option>
+                            <option value={1}>1 - Terrible</option>
+                          </Form.Select>
+                        </Form.Group>
+                      </Col>
+                      <Col md={9}>
+                        <Form.Group controlId="comment">
+                          <Form.Label>Comment</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={2}
+                            placeholder="Share your thoughts about this book"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            required
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <div className="mt-3">
+                      <Button type="submit" variant="dark">
+                        Submit Feedback
+                      </Button>
+                    </div>
+                  </Form>
+                )}
+              </Card>
             </Col>
           </Row>
         </Container>

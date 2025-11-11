@@ -266,7 +266,7 @@
     {
       "id": "u_seller_1",
       "email": "seller1@example.com",
-      "password": "$hashed$seller1",
+      "password": "seller1",
       "name": "Nguyen Van A",
       "role": "seller",
       "status": "approved",
@@ -476,6 +476,45 @@
         "transactionId": "tx_9001"
       },
       "createdAt": "2025-11-01T14:06:00+07:00"
+    }
+  ],
+  "feedbacks": [
+    {
+      "id": "fb_001",
+      "bookId": "1",
+      "userId": "u_customer_1",
+      "userName": "Le Thi B",
+      "rate": 5,
+      "comment": "Sách rất hữu ích, nhiều ví dụ thực tế.",
+      "createdAt": "2025-11-10T09:00:00+07:00"
+    },
+    {
+      "id": "fb_002",
+      "bookId": "2",
+      "userId": "u_admin",
+      "userName": "System Admin",
+      "rate": 4,
+      "comment": "Nội dung sâu sắc, rất đáng đọc.",
+      "createdAt": "2025-11-10T10:30:00+07:00",
+      "hidden": false
+    },
+    {
+      "id": "fb_003",
+      "bookId": "3",
+      "userId": "u_1762697566489",
+      "userName": "Ichiro",
+      "rate": 5,
+      "comment": "Thay đổi thói quen hiệu quả, dễ áp dụng.",
+      "createdAt": "2025-11-11T08:15:00+07:00"
+    },
+    {
+      "id": "fb_004",
+      "bookId": "1",
+      "userId": "u_1762539247891",
+      "userName": "bi",
+      "rate": 4,
+      "comment": "Đọc khá dễ hiểu, giúp cải thiện kỹ năng giao tiếp.",
+      "createdAt": "2025-11-11T12:00:00+07:00"
     }
   ],
   "vouchers": [

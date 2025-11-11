@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../../components/DashboardLayout';
+import { fetchBooksFromServer } from '../../../services/api';
 
 function ManageBook() {
   const [books, setBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('/database.json')
-      .then((response) => response.json())
-      .then((data) => setBooks(data.books))
+    fetchBooksFromServer()
+      .then((data) => setBooks(data))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
@@ -24,7 +24,7 @@ function ManageBook() {
     <DashboardLayout>
       <div>
         <h2>Manage Books</h2>
-        <Link to="/saler/add-book">
+        <Link to="/seller/add-book">
           <Button variant="primary" className="mb-3">
             Add Book
           </Button>
@@ -55,12 +55,12 @@ function ManageBook() {
                 <td>{book.author}</td>
                 <td>{book.price}</td>
                 <td>
-                  <Link to={`/saler/edit-book/${book.id}`}>
+                  <Link to={`/seller/edit-book/${book.id}`}>
                     <Button variant="warning" className="me-2">
                       Edit
                     </Button>
                   </Link>
-                  <Link to={`/saler/delete-book/${book.id}`}>
+                  <Link to={`/seller/delete-book/${book.id}`}>
                     <Button variant="danger">
                       Delete
                     </Button>

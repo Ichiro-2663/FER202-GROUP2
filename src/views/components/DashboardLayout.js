@@ -7,7 +7,7 @@ import SalerSidebar from './SalerSidebar';
 function DashboardLayout({ children }) {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
-  const isSaler = location.pathname.startsWith('/saler');
+  const isSaler = location.pathname.startsWith('/seller');
 
   const sidebar = isAdmin ? <Sidebar /> : isSaler ? <SalerSidebar /> : null;
 

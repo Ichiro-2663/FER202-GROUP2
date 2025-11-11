@@ -21,6 +21,7 @@ import ManageBook from "../pages/Saler/ManageBook";
 import AddBook from "../pages/Saler/AddBook";
 import EditBook from "../pages/Saler/EditBook";
 import DeleteBook from "../pages/Saler/DeleteBook";
+import ManageFeedback from "../pages/Saler/ManageFeedback";
 
 function Router() {
   return (
@@ -31,15 +32,16 @@ function Router() {
         <Route path="/products" element={<ProductList />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/category/:categoryName" element={<ProductList />} />
-        <Route path="/saler" element={<SalerDashboard />} />
+        <Route path="/seller" element={<SalerDashboard />} />
         <Route path="/login" element={<Login />} />
          <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
-        {/* Saler routes */}
-        <Route path="/saler/manage-book" element={<ManageBook />} />
-        <Route path="/saler/add-book" element={<AddBook />} />
-        <Route path="/saler/edit-book/:id" element={<EditBook />} />
-        <Route path="/saler/delete-book/:id" element={<DeleteBook />} />
+        {/* Seller routes */}
+        <Route path="/seller/manage-book" element={<ManageBook />} />
+        <Route path="/seller/add-book" element={<AddBook />} />
+        <Route path="/seller/edit-book/:id" element={<EditBook />} />
+        <Route path="/seller/delete-book/:id" element={<DeleteBook />} />
+        <Route path="/seller/manage-feedback" element={<ManageFeedback />} />
         {/* Admin routes */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/manageAccount" element={<ManageAccount />} /> 

@@ -15,13 +15,13 @@ function EditBook() {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const response = await axios.get('/database.json');
-        const book = response.data.books.find((b) => b.id === id);
+        const response = await axios.get(`http://localhost:9999/books/${id}`);
+        const book = response.data;
         if (book) {
-          setTitle(book.title);
-          setAuthor(book.author);
-          setPrice(book.price);
-          setDescription(book.description);
+          setTitle(book.title ?? '');
+          setAuthor(book.author ?? '');
+          setPrice(book.price ?? '');
+          setDescription(book.description ?? '');
         }
       } catch (error) {
         console.error('Error fetching book data:', error);
@@ -42,10 +42,9 @@ function EditBook() {
     };
 
     try {
-      // This is a mock update. In a real application, you would make a PUT request to your API endpoint.
-      console.log('Updated book data:', updatedBook);
+      await axios.put(`http://localhost:9999/books/${id}`, updatedBook);
       alert(`Book with ID ${id} updated successfully!`);
-      navigate('/saler/manage-book');
+      navigate('/seller/manage-book');
     } catch (error) {
       console.error('Error updating book:', error);
       alert('Failed to update book.');

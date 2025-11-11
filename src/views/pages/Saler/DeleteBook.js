@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/DashboardLayout';
+import axios from 'axios';
 
 function DeleteBook() {
   const { id } = useParams();
@@ -9,19 +10,20 @@ function DeleteBook() {
   const [book, setBook] = useState(null);
 
   useEffect(() => {
-    fetch('/database.json')
-      .then((response) => response.json())
-      .then((data) => {
-        const foundBook = data.books.find((b) => b.id === id);
-        setBook(foundBook);
-      })
+    axios.get(`http://localhost:9999/books/${id}`)
+      .then((res) => setBook(res.data))
       .catch((error) => console.error('Error fetching data:', error));
   }, [id]);
 
-  const handleDelete = () => {
-    // Handle delete logic here
-    alert(`Book "${book.title}" deleted successfully!`);
-    navigate('/saler/manage-book');
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:9999/books/${id}`);
+      alert(`Book "${book.title}" deleted successfully!`);
+      navigate('/seller/manage-book');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete book.');
+    }
   };
 
   if (!book) {
@@ -47,7 +49,7 @@ function DeleteBook() {
             <Button variant="danger" onClick={handleDelete}>
               Yes, Delete
             </Button>
-            <Button variant="secondary" onClick={() => navigate('/saler/manage-book')} className="ms-2">
+            <Button variant="secondary" onClick={() => navigate('/seller/manage-book')} className="ms-2">
               Cancel
             </Button>
           </Card.Body>
