@@ -530,7 +530,7 @@ function Home() {
         <Container>
           <div className="text-center mb-5">
             <h2 style={{ fontSize: "36px", fontWeight: "700", marginBottom: "16px" }}>
-              Bestsellers
+              Best Seller
             </h2>
             <div 
               style={{ 
