@@ -306,7 +306,7 @@ function CreateVoucher() {
                       <td>
                         {v.usedCount || 0} / {v.usageLimit}
                       </td>
-                      <td>{v.createdBy ||'Saler'}</td>
+                      <td>{v.createdBy ||'Seller'}</td>
                       <td>
                         <Button
                           variant="danger"
