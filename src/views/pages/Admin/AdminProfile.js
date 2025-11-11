@@ -85,6 +85,43 @@ function AdminProfile() {
                   }
                 />
               </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Phone number</Form.Label>
+                <Form.Control
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={admin.profile?.phone || ""}
+                  onChange={(e) => {
+                    const onlyDigits = e.target.value.replace(/\D/g, ""); // loại bỏ ký tự không phải số
+                    setAdmin({
+                      ...admin,
+                      profile: {
+                        ...admin.profile,
+                        phone: onlyDigits,
+                      },
+                    });
+                  }}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={admin.profile?.address || ""}
+                  onChange={(e) =>
+                    setAdmin({
+                      ...admin,
+                      profile: {
+                        ...admin.profile,
+                        address: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </Form.Group>
+
               <Button variant="primary" onClick={handleSave}>
                 Save change
               </Button>
