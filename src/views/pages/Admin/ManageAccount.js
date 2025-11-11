@@ -109,17 +109,31 @@ function ManageAccount() {
         alert("Failed to update account status.");
       });
   };
-
   const handleToggleLock = (user) => {
     const isLocked = user.status === "disabled";
     const confirmText = isLocked
       ? "Are you sure you want to unlock this account?"
       : "Are you sure you want to lock this account?";
     if (window.confirm(confirmText)) {
-      const newStatus = isLocked ? "active" : "disabled";
+      let newStatus;
+      if (isLocked) {
+        // Khi mở lại
+        if (user.role === "customer") {
+          newStatus = "active";
+        } else if (user.role === "seller") {
+          newStatus = "approved";
+        } else {
+          newStatus = "active"; // fallback cho các role khác
+        }
+      } else {
+        // Khi khóa lại
+        newStatus = "disabled";
+      }
       updateUserStatus(user.id, newStatus);
     }
   };
+
+  
 
   const handleDeleteAccount = (userId) => {
     if (window.confirm("Are you sure you want to delete this account?")) {
@@ -218,9 +232,8 @@ function ManageAccount() {
                           onClick={() => handleToggleLock(user)}
                         >
                           <i
-                            className={`fas ${
-                              user.status === "disabled" ? "fa-unlock" : "fa-lock"
-                            }`}
+                            className={`fas ${user.status === "disabled" ? "fa-unlock" : "fa-lock"
+                              }`}
                           ></i>
                         </Button>
                         <Button

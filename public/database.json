@@ -494,6 +494,23 @@
       "visible": true,
       "authorId": "u_admin",
       "id": "post_001"
+    },
+    {
+      "id": "post_002",
+      "title": "Top 10 Hot books",
+      "excerpt": "Hint for 10 books",
+      "content": "abc",
+      "featuredImage": "",
+      "tags": [
+        "Điểm sách",
+        "Literature"
+      ],
+      "visible": true,
+      "category": "Điểm sách",
+      "linkedProductIds": [
+        "b_002"
+      ],
+      "authorId": "u_admin"
     }
   ],
   "notifications": [
