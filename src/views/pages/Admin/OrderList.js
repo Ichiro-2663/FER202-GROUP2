@@ -9,9 +9,8 @@ export default function OrderList() {
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' | 'desc'
+  const [sortConfig, setSortConfig] = useState({ field: 'createdAt', order: 'desc' }); // default: newest first
   const navigate = useNavigate();
-
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser || currentUser.role !== 'admin') {
@@ -19,7 +18,6 @@ export default function OrderList() {
       navigate('/');
     }
   }, [navigate]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,7 +33,6 @@ export default function OrderList() {
     };
     fetchData();
   }, []);
-
   const mergedOrders = orders.map((order) => {
     const user = users.find((u) => u.id === order.customerId);
     return {
@@ -50,13 +47,47 @@ export default function OrderList() {
     order.userName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const sortedOrders = filteredOrders.sort((a, b) =>
-    sortOrder === 'asc' ? a.total - b.total : b.total - a.total
-  );
+  const sortedOrders = [...filteredOrders].sort((a, b) => {
+    const { field, order } = sortConfig;
+    const isAsc = order === 'asc';
+
+    if (field === 'total') {
+      return isAsc ? a.total - b.total : b.total - a.total;
+    }
+    if (field === 'userName') {
+      return isAsc
+        ? a.userName.localeCompare(b.userName)
+        : b.userName.localeCompare(a.userName);
+    }
+    if (field === 'status') {
+      return isAsc
+        ? a.status.localeCompare(b.status)
+        : b.status.localeCompare(a.status);
+    }
+    if (field === 'createdAt') {
+      return isAsc
+        ? new Date(a.createdAt) - new Date(b.createdAt)
+        : new Date(b.createdAt) - new Date(a.createdAt);
+    }
+    return 0;
+  });
+
+  const handleSort = (field) => {
+    setSortConfig((prev) => ({
+      field,
+      order:
+        prev.field === field && prev.order === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
+  const getSortSymbol = (field) => {
+    if (sortConfig.field !== field) return '↕️';
+    return sortConfig.order === 'asc' ? '↑' : '↓';
+  };
 
   return (
     <DashboardLayout sidebar={<Sidebar />} className="p-4">
-      <h3>📦 List of Orders</h3>
+      <h3> List of Orders</h3>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
         <Form.Control
@@ -66,25 +97,26 @@ export default function OrderList() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Button
-          variant="secondary"
-          onClick={() =>
-            setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
-          }
-        >
-          Sort by Total ({sortOrder === 'asc' ? '↑' : '↓'})
-        </Button>
       </div>
 
       <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>#</th>
-            <th>User</th>
+            <th onClick={() => handleSort('userName')} style={{ cursor: 'pointer' }}>
+              User {getSortSymbol('userName')}
+            </th>
             <th>Email</th>
-            <th>Total</th>
+            <th onClick={() => handleSort('total')} style={{ cursor: 'pointer' }}>
+              Total {getSortSymbol('total')}
+            </th>
             <th>Address</th>
-            <th>Status</th>
+            <th onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}>
+              Status {getSortSymbol('status')}
+            </th>
+            <th onClick={() => handleSort('createdAt')} style={{ cursor: 'pointer' }}>
+              Date {getSortSymbol('createdAt')}
+            </th>
             <th>Action</th>
           </tr>
         </thead>
@@ -107,6 +139,7 @@ export default function OrderList() {
                   {order.status}
                 </span>
               </td>
+              <td>{new Date(order.createdAt).toLocaleDateString()}</td>
               <td>
                 <Button
                   variant="info"
