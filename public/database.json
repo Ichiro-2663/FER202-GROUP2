@@ -340,6 +340,43 @@
       "role": "customer",
       "status": "active",
       "createdAt": "2025-11-09T14:12:46.489Z"
+    },
+    {
+      "id": "u_1762868827738",
+      "name": "Test1",
+      "email": "test@gmail.com",
+      "password": "123",
+      "role": "customer",
+      "status": "requested",
+      "createdAt": "2025-11-11T13:47:07.738Z",
+      "previousStatus": "requested"
+    },
+    {
+      "id": "u_1762868865232",
+      "name": "Test2",
+      "email": "test2@gmail.com",
+      "password": "123",
+      "role": "customer",
+      "status": "requested",
+      "createdAt": "2025-11-11T13:47:45.232Z"
+    },
+    {
+      "id": "u_1762868900157",
+      "name": "Test3",
+      "email": "test3@gmail.com",
+      "password": "123",
+      "role": "customer",
+      "status": "requested",
+      "createdAt": "2025-11-11T13:48:20.157Z"
+    },
+    {
+      "id": "u_1762868934248",
+      "name": "Test4",
+      "email": "test4@gmail.com",
+      "password": "123",
+      "role": "customer",
+      "status": "requested",
+      "createdAt": "2025-11-11T13:48:54.248Z"
     }
   ],
   "publishers": [

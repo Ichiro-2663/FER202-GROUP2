@@ -144,7 +144,7 @@ function Navbar() {
   }
 
   try {
-    const updated = { ...user, status: "requested", role: "seller" };
+    const updated = { ...user, status: "requested" };
     const res = await fetch(`http://localhost:9999/users/${user.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
