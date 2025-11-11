@@ -346,9 +346,11 @@
       "name": "nguyenkhoi",
       "email": "nguyenkhoi@gmail.com",
       "password": "nguyen1",
-      "role": "customer",
+      "role": "seller",
       "createdAt": "2025-11-10T17:37:56.182Z",
-      "status": "active"
+      "status": "approved",
+      "phone": "123",
+      "address": "123123123"
     },
     {
       "id": "u_1762796464016",

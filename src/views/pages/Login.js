@@ -91,7 +91,12 @@ function Login() {
 );
 
    if (foundUser) {
-      alert("🎉 Login successful!");
+  if (foundUser.role === "seller" && foundUser.status !== "approved") {
+    alert("⏳ Your seller account is not yet approved by admin!");
+    return;
+  }
+
+  alert("🎉 Login successful!");
       localStorage.setItem("currentUser", JSON.stringify(foundUser));
 
       // ✅ If admin, redirect to admin page

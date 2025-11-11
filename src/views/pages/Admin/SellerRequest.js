@@ -23,7 +23,7 @@ function SellerRequests() {
   }, [navigate]);
   useEffect(() => {
     axios
-      .get("http://localhost:9999/users?role=seller")
+      .get("http://localhost:9999/users")
       .then((res) => {
         const pendingSellers = res.data.filter(
           (user) => user.status === "pending" || user.status === "requested"
@@ -37,19 +37,23 @@ function SellerRequests() {
       });
   }, []);
 
-  const handleAction = (userId, action) => {
-    const updatedStatus = action === "approve" ? "approved" : "rejected";
+ const handleAction = (userId, action) => {
+  const updatedStatus = action === "approve" ? "approved" : "rejected";
+  const updatedRole = action === "approve" ? "seller" : "user";
 
-    axios
-      .patch(`http://localhost:9999/users/${userId}`, { status: updatedStatus })
-      .then(() => {
-        setRequests((prev) => prev.filter((u) => u.id !== userId));
-      })
-      .catch((err) => {
-        console.error("Error updating status:", err);
-        alert("Failed to update user status.");
-      });
-  };
+  axios
+    .patch(`http://localhost:9999/users/${userId}`, {
+      status: updatedStatus,
+      role: updatedRole,
+    })
+    .then(() => {
+      setRequests((prev) => prev.filter((u) => u.id !== userId));
+    })
+    .catch((err) => {
+      console.error("Error updating status:", err);
+      alert("Failed to update user status.");
+    });
+};
 
   return (
     <DashboardLayout sidebar={<SalerSidebar />} className="p-4">
